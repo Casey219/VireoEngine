@@ -1,6 +1,5 @@
 #include "Application.h"
 
-#include<iostream>
 namespace Vireo {
 
 	Application::Application() {
@@ -12,7 +11,6 @@ namespace Vireo {
 	}
 
 	void Application::Run() {
-		std::cout << "hello hhh" << std::endl;
 		while (true);
 	}
 }

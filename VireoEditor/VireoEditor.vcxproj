@@ -58,7 +58,8 @@
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/VireoEngine/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/VireoEngine/src;$(SolutionDir)ThirdParty/spdlog/include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -74,7 +75,8 @@
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/VireoEngine/src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/VireoEngine/src;$(SolutionDir)ThirdParty/spdlog/include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
