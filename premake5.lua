@@ -18,6 +18,9 @@ project "VireoEngine"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "virpch.h"
+	pchsource "VireoEngine/src/virpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
