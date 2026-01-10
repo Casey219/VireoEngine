@@ -1,5 +1,8 @@
 #include "Application.h"
 
+#include"Events/ApplicaitonEvent.h"
+#include"Logger.h"
+
 namespace Vireo {
 
 	Application::Application() {
@@ -11,6 +14,17 @@ namespace Vireo {
 	}
 
 	void Application::Run() {
-		while (true);
+		WindowResizeEvent e(1200, 800);
+		//VIR_TRACE(e);
+
+		//VIR_TRACE(e.ToString());
+
+		if (e.IsInCategory(EventCategoryApplication)) {
+			VIR_TRACE(e.ToString());
+		}
+		if (e.IsInCategory(EventCategoryInput)) {
+			VIR_TRACE(e.ToString());
+		}
+
 	}
 }
