@@ -10,4 +10,12 @@
 	#error only support Windows!
 #endif
 
+#ifdef VIR_ENABLE_ASSERTS
+#define VIR_ASSERT(x,...) {if(!x) {VIR_ERROR("Assertion Failec:{0}",__VA_ARGS__);__debugbreak();}}
+#define VIR_CORE_ASSERT(x,...) {if(!x) {VIR_CORE_ERROR("Assertion Failec:{0}",__VA_ARGS__);__debugbreak();}}
+#else 
+#define VIR_ASSERT(x,...)
+#define VIR_CORE_ASSERT(x,...)
+#endif
+
 #define BIT(x) (1<<x)

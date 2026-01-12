@@ -10,6 +10,12 @@ workspace "VireoEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir={}
+IncludeDir["GLFW"]="ThirdParty/GLFW/include"
+
+include "ThirdParty/GLFW"
+
+
 project "VireoEngine"
 	location "VireoEngine"
 	kind "SharedLib"
@@ -29,7 +35,14 @@ project "VireoEngine"
 
 	includedirs
 	{
-		"ThirdParty/spdlog/include"   
+		"%{prj.name}/src",
+		"ThirdParty/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -40,7 +53,8 @@ project "VireoEngine"
 		defines
 		{
 			"VIR_PLATFORM_WINDOWS",
-			"VIR_BUILD_DLL"
+			"VIR_BUILD_DLL",
+			"VIR_ENABLE_ASSERTS"
 		}
 
 		postbuildcommands
@@ -94,7 +108,8 @@ project "VireoEditor"
 
 		defines
 		{
-			"VIR_PLATFORM_WINDOWS"
+			"VIR_PLATFORM_WINDOWS",
+			"VIR_ENABLE_ASSERTS"
 		}
 
 	filter "configurations:Debug"
