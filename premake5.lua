@@ -47,7 +47,7 @@ project "VireoEngine"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest" 
 
 		defines
@@ -64,14 +64,17 @@ project "VireoEngine"
 
 	filter "configurations:Debug"
 		defines "VIR_DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "VIR_RELEASE"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "VIR_DIST"
+		runtime "Release"
 		optimize "On"
     
     filter "action:vs*" --add utf-8 for spdlog
@@ -103,7 +106,7 @@ project "VireoEditor"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 
 		defines
@@ -114,14 +117,20 @@ project "VireoEditor"
 
 	filter "configurations:Debug"
 		defines "VIR_DEBUG"
+		--buildoptions {"/MDd"}
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "VIR_RELEASE"
+		--buildoptions {"/MD"}
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "VIR_DIST"
+		--buildoptions {"/MD"}
+		runtime "Release"
 		optimize "On"
 
     filter "action:vs*"
