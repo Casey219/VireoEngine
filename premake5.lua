@@ -12,9 +12,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir={}
 IncludeDir["GLFW"]="ThirdParty/GLFW/include"
+IncludeDir["GLAD"]="ThirdParty/GLAD/include"
 
 include "ThirdParty/GLFW"
-
+include "ThirdParty/GLAD"
 
 project "VireoEngine"
 	location "VireoEngine"
@@ -37,11 +38,13 @@ project "VireoEngine"
 	{
 		"%{prj.name}/src",
 		"ThirdParty/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLAD}"
 	}
 	links
 	{
 		"GLFW",
+		"GLAD",
 		"opengl32.lib"
 	}
 
