@@ -12,7 +12,7 @@ namespace Vireo {
 
 		WindowProps(const std::string& title="Vireo Engine",
 			uint32_t width=1600,
-			uint32_t height=900)
+			uint32_t height=1200)
 			:Title(title),Width(width),Height(height){ }
 
 	};

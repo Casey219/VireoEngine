@@ -13,9 +13,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir={}
 IncludeDir["GLFW"]="ThirdParty/GLFW/include"
 IncludeDir["GLAD"]="ThirdParty/GLAD/include"
+IncludeDir["imgui"]="ThirdParty/imgui"
 
 include "ThirdParty/GLFW"
 include "ThirdParty/GLAD"
+include "ThirdParty/imgui"
 
 project "VireoEngine"
 	location "VireoEngine"
@@ -39,12 +41,14 @@ project "VireoEngine"
 		"%{prj.name}/src",
 		"ThirdParty/spdlog/include",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.GLAD}"
+		"%{IncludeDir.GLAD}",
+		"%{IncludeDir.imgui}"
 	}
 	links
 	{
 		"GLFW",
 		"GLAD",
+		"ImGui",
 		"opengl32.lib"
 	}
 
@@ -56,8 +60,7 @@ project "VireoEngine"
 		defines
 		{
 			"VIR_PLATFORM_WINDOWS",
-			"VIR_BUILD_DLL",
-			"VIR_ENABLE_ASSERTS"
+			"VIR_BUILD_DLL"
 		}
 
 		postbuildcommands
@@ -114,8 +117,7 @@ project "VireoEditor"
 
 		defines
 		{
-			"VIR_PLATFORM_WINDOWS",
-			"VIR_ENABLE_ASSERTS"
+			"VIR_PLATFORM_WINDOWS"
 		}
 
 	filter "configurations:Debug"

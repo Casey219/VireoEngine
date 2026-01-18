@@ -12,6 +12,10 @@ namespace Vireo {
 		Application();
 		virtual ~Application();
 
+		inline Window& GetWindow() { return *m_Window; }
+
+		inline static Application& Get() { return *s_Instance; }
+
 		void Run();
 
 		void OnEvent(Event& e);
@@ -23,6 +27,9 @@ namespace Vireo {
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+
+	private:
+		static Application* s_Instance;
 	};
 
 	//to be defined in client
