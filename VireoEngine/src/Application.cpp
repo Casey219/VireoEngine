@@ -55,8 +55,8 @@ namespace Vireo {
 				layer->OnUpdate();
 			}
 
-			auto [x, y] = Input::GetMousePosition();
-			VIR_CORE_ERROR("{0}, {1}", x, y);
+			//auto [x, y] = Input::GetMousePosition();
+			//VIR_CORE_ERROR("{0}, {1}", x, y);
 
 			m_Window->OnUpdate();
 

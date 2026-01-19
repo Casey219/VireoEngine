@@ -50,6 +50,8 @@
     <ClInclude Include="src\virpch.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\KeyCodes.h" />
+    <ClInclude Include="src\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />

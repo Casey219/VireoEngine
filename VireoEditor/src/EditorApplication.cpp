@@ -14,9 +14,16 @@ public:
 		//VIR_INFO("exeample layer is OnUpdate()");
 	}
 
-	void OnEvent(Vireo::Event& e) override
+	void OnEvent(Vireo::Event& event) override
 	{
 		//VIR_INFO(e.ToString());
+		if (event.GetEventType() == Vireo::EventType::KeyPressed)
+		{
+			Vireo::KeyPressedEvent& e = (Vireo::KeyPressedEvent&)event;
+			if (e.GetKeyCode() == VIR_KEY_TAB)
+				VIR_TRACE("Tab key is pressed (event)!");
+			VIR_TRACE("{0}", (char)e.GetKeyCode());
+		}
 	}
 };
 
