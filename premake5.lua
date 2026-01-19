@@ -19,6 +19,8 @@ include "ThirdParty/GLFW"
 include "ThirdParty/GLAD"
 include "ThirdParty/imgui"
 
+startproject "VireoEditor"
+
 project "VireoEngine"
 	location "VireoEngine"
 	kind "SharedLib"
