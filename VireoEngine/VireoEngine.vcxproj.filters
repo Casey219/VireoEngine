@@ -48,6 +48,8 @@
     <ClInclude Include="src\Vireo.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\virpch.h" />
+    <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
@@ -64,5 +66,6 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\virpch.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@
 #include"Logger.h"
 #include<glad/glad.h>
 #include<GLFW//glfw3.h>
-
+#include<Input.h>
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -50,9 +50,14 @@ namespace Vireo {
 		{
 			glClearColor(0.1, 0.2, 0.1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate();
 			}
+
+			auto [x, y] = Input::GetMousePosition();
+			VIR_CORE_ERROR("{0}, {1}", x, y);
+
 			m_Window->OnUpdate();
 
 

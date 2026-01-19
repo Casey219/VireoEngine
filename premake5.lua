@@ -1,8 +1,10 @@
 workspace "VireoEngine"
 	architecture "x64"
+	startproject "VireoEditor"
 
 	configurations
 	{
+
 		"Debug",
 		"Release",
 		"Dist"
@@ -19,7 +21,6 @@ include "ThirdParty/GLFW"
 include "ThirdParty/GLAD"
 include "ThirdParty/imgui"
 
-startproject "VireoEditor"
 
 project "VireoEngine"
 	location "VireoEngine"
