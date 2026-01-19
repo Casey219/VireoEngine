@@ -5,6 +5,7 @@
 #include<Window.h>
 #include<Events/ApplicationEvent.h>
 #include<LayerStack.h>
+#include <ImGui/ImGuiLayer.h>
 namespace Vireo {
 	class VIR_API Application
 	{
@@ -25,6 +26,7 @@ namespace Vireo {
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 

@@ -1,5 +1,7 @@
 #include<Vireo.h>
 #include<glm/glm.hpp>
+#include <imgui.h>
+#include <Events/KeyEvent.h>
 class ExampleLayer :public Vireo::Layer {
 public:
 	ExampleLayer():Layer("example") {
@@ -13,6 +15,14 @@ public:
 	{
 		//VIR_INFO("exeample layer is OnUpdate()");
 	}
+
+	virtual void OnImGuiRender() override
+	{
+		/*ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::End();*/
+	}
+
 
 	void OnEvent(Vireo::Event& event) override
 	{
@@ -31,7 +41,6 @@ class EditorApplication :public Vireo::Application {
 public:
 	EditorApplication() {
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Vireo::ImGuiLayer());
 	}
 	~EditorApplication() {
 

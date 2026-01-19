@@ -112,7 +112,8 @@ project "VireoEditor"
 	{
 		"ThirdParty/spdlog/include", 
 		"VireoEngine/src",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.imgui}"
 	}
 
 	links
