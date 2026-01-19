@@ -16,6 +16,8 @@ IncludeDir={}
 IncludeDir["GLFW"]="ThirdParty/GLFW/include"
 IncludeDir["GLAD"]="ThirdParty/GLAD/include"
 IncludeDir["imgui"]="ThirdParty/imgui"
+IncludeDir["glm"]="ThirdParty/glm"
+
 
 include "ThirdParty/GLFW"
 include "ThirdParty/GLAD"
@@ -36,7 +38,10 @@ project "VireoEngine"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{IncludeDir.glm}/glm/glm/**.hpp",
+		"%{IncludeDir.glm}/glm.glm/**.inl"
+
 	}
 
 	includedirs
@@ -45,7 +50,8 @@ project "VireoEngine"
 		"ThirdParty/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.glm}"
 	}
 	links
 	{
@@ -105,7 +111,8 @@ project "VireoEditor"
 	includedirs
 	{
 		"ThirdParty/spdlog/include", 
-		"VireoEngine/src"
+		"VireoEngine/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links

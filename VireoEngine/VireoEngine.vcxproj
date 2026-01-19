@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -104,7 +104,7 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -132,7 +132,7 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -170,11 +170,11 @@
     <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\MouseButtonCodes.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Vireo.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\virpch.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
@@ -183,11 +183,11 @@
     <ClCompile Include="src\LayerStack.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\virpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParty\GLFW\GLFW.vcxproj">
