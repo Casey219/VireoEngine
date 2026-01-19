@@ -5,9 +5,6 @@
 [submodule "ThirdParty/GLFW"]
 	path = ThirdParty/GLFW
 	url = https://github.com/Casey219/glfw.git
-[submodule "ThirdParty/imgui"]
-	path = ThirdParty/imgui
-	url = https://github.com/Casey219/imgui.git
 [submodule "ThirdParty/glm"]
 	path = ThirdParty/glm
 	url = https://github.com/g-truc/glm.git
