@@ -6,7 +6,7 @@
 
 namespace Vireo {
 
-	class VIR_API KeyEvent : public Event
+	class  KeyEvent : public Event
 	{
 	public:
 		int GetKeyCode() const { return m_KeyCode; }
@@ -21,7 +21,7 @@ namespace Vireo {
 		int m_KeyCode;
 	};
 
-	class VIR_API KeyPressedEvent : public KeyEvent
+	class  KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keyCode, int repeatedCount) :KeyEvent(keyCode), m_RepeatedCount(repeatedCount) {}
@@ -37,7 +37,7 @@ namespace Vireo {
 		int m_RepeatedCount;
 	};
 
-	class VIR_API KeyReleasedEvent :public KeyEvent
+	class  KeyReleasedEvent :public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keyCode) :KeyEvent(keyCode) {}
@@ -52,7 +52,7 @@ namespace Vireo {
 
 	};
 
-	class VIR_API KeyTypedEvent :public KeyEvent
+	class  KeyTypedEvent :public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int KeyCode) :KeyEvent(KeyCode) {}

@@ -7,7 +7,7 @@
 #include<LayerStack.h>
 #include <ImGui/ImGuiLayer.h>
 namespace Vireo {
-	class VIR_API Application
+	class  Application
 	{
 	public:
 		Application();

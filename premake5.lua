@@ -26,8 +26,10 @@ include "ThirdParty/imgui"
 
 project "VireoEngine"
 	location "VireoEngine"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -43,6 +45,11 @@ project "VireoEngine"
 		"%{IncludeDir.glm}/glm.glm/**.inl"
 
 	}
+
+	-- defines
+	-- {
+	-- 	"_CRT_SECURE_NO_WARNINGS"
+	-- }
 
 	includedirs
 	{
@@ -62,8 +69,6 @@ project "VireoEngine"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "Off"
 		systemversion "latest" 
 
 		defines
@@ -72,10 +77,6 @@ project "VireoEngine"
 			"VIR_BUILD_DLL"
 		}
 
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/VireoEditor")
-		}
 
 	filter "configurations:Debug"
 		defines "VIR_DEBUG"
@@ -98,6 +99,8 @@ project "VireoEditor"
 	location "VireoEditor"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -123,8 +126,6 @@ project "VireoEditor"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "Off"
-		systemversion "latest"
 
 		defines
 		{

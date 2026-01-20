@@ -5,7 +5,7 @@
 
 namespace Vireo {
 
-	class VIR_API Logger {
+	class  Logger {
 	public:
 		static void Init();
 

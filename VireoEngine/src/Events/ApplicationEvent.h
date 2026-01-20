@@ -5,7 +5,7 @@
 
 namespace Vireo {
 
-	class VIR_API WindowResizeEvent :public Event
+	class  WindowResizeEvent :public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width,unsigned int height)
@@ -26,7 +26,7 @@ namespace Vireo {
 		unsigned int m_Width,  m_Height;
 	};
 
-	class VIR_API WindowCloseEvent : public Event
+	class  WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() = default;
