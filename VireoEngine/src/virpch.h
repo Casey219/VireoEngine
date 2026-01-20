@@ -10,6 +10,8 @@
 #include<sstream>
 #include<vector>
 
+#include<Logger.h>
+
 #ifdef VIR_PLATFORM_WINDOWS
 	#include<Windows.h>
 #endif
