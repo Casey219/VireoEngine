@@ -18,10 +18,11 @@ IncludeDir["GLAD"]="ThirdParty/GLAD/include"
 IncludeDir["imgui"]="ThirdParty/imgui"
 IncludeDir["glm"]="ThirdParty/glm"
 
-
-include "ThirdParty/GLFW"
-include "ThirdParty/GLAD"
-include "ThirdParty/imgui"
+group "ThirdParty"
+	include "ThirdParty/GLFW"
+	include "ThirdParty/GLAD"
+	include "ThirdParty/imgui"
+group ""
 
 
 project "VireoEngine"
