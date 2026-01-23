@@ -6,6 +6,8 @@
 #include<glad/glad.h>
 #include<GLFW//glfw3.h>
 #include<Input.h>
+#include <Renderer/RenderCommand.h>
+#include "Renderer/Renderer.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -192,20 +194,41 @@ namespace Vireo {
 		
 		while (m_Running)
 		{
-			//glClearColor(0.1f, 0.2f, 0.1f, 1);
-			glClearColor(0.1f, 0.1f, 0.1f, 1);
+			////glClearColor(0.1f, 0.2f, 0.1f, 1);
+			//glClearColor(0.1f, 0.1f, 0.1f, 1);
 
-			glClear(GL_COLOR_BUFFER_BIT);
+			//glClear(GL_COLOR_BUFFER_BIT);
+
+			//m_BlueShader->Bind();
+			//m_SquareVA->Bind();
+			//glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
+			//m_Shader->Bind();
+			////glBindVertexArray(m_VertexArray);
+			////glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+			//m_VertexArray->Bind();
+			//glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
+
+			RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1 });
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 
 			m_BlueShader->Bind();
 			m_SquareVA->Bind();
 			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_SquareVA);
 
 			m_Shader->Bind();
-			//glBindVertexArray(m_VertexArray);
-			//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 			m_VertexArray->Bind();
 			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
+
+
+
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
