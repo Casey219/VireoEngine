@@ -3,8 +3,7 @@
 
 
 #include"Logger.h"
-#include<glad/glad.h>
-#include<GLFW//glfw3.h>
+
 #include<Input.h>
 #include <Renderer/RenderCommand.h>
 #include "Renderer/Renderer.h"
@@ -16,31 +15,13 @@
 namespace Vireo {
 	Application* Application::s_Instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	
+
+
+
+	Application::Application() 
+		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
-		switch (type)
-		{
-		case Vireo::ShaderDataType::Float:    return GL_FLOAT;
-		case Vireo::ShaderDataType::Float2:   return GL_FLOAT;
-		case Vireo::ShaderDataType::Float3:   return GL_FLOAT;
-		case Vireo::ShaderDataType::Float4:   return GL_FLOAT;
-		case Vireo::ShaderDataType::Mat3:     return GL_FLOAT;
-		case Vireo::ShaderDataType::Mat4:     return GL_FLOAT;
-		case Vireo::ShaderDataType::Int:      return GL_INT;
-		case Vireo::ShaderDataType::Int2:     return GL_INT;
-		case Vireo::ShaderDataType::Int3:     return GL_INT;
-		case Vireo::ShaderDataType::Int4:     return GL_INT;
-		case Vireo::ShaderDataType::Bool:     return GL_BOOL;
-		}
-
-		VIR_CORE_ASSERT(false, "Unknown ShaderDataType!");
-		return 0;
-	}
-
-
-
-
-	Application::Application() {
 		VIR_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -114,12 +95,14 @@ namespace Vireo {
 
 			out vec3 v_Position;
 			out vec4 v_Color;
+			uniform mat4 u_ViewProjection;
 
 			void main()
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = vec4(a_Position, 1.0);	
+				//gl_Position = vec4(a_Position, 1.0);	
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);		
 			}
 		)";
 
@@ -130,6 +113,7 @@ namespace Vireo {
 
 			in vec3 v_Position;
 			in vec4 v_Color;
+
 			void main()
 			{
 				//color = vec4(v_Position * 0.5 + 0.5, 1.0);
@@ -145,11 +129,13 @@ namespace Vireo {
 			layout(location = 0) in vec3 a_Position;
 
 			out vec3 v_Position;
+			uniform mat4 u_ViewProjection;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);	
+				//gl_Position = vec4(a_Position, 1.0);	
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);	
 			}
 		)";
 
@@ -210,20 +196,16 @@ namespace Vireo {
 			//glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 
-			RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1 });
+			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 			RenderCommand::Clear();
 
-			Renderer::BeginScene();
+			m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
+			m_Camera.SetRotation(45.0f);
 
-			m_BlueShader->Bind();
-			m_SquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-			Renderer::Submit(m_SquareVA);
+			Renderer::BeginScene(m_Camera);
 
-			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-			Renderer::Submit(m_VertexArray);
+			Renderer::Submit(m_BlueShader, m_SquareVA);
+			Renderer::Submit(m_Shader, m_VertexArray);
 
 			Renderer::EndScene();
 
