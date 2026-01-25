@@ -174,6 +174,7 @@
     <ClInclude Include="src\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Timestep.h" />
     <ClInclude Include="src\Vireo.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\virpch.h" />
