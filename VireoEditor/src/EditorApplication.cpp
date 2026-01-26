@@ -20,7 +20,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		std::shared_ptr<Vireo::VertexBuffer> vertexBuffer;
+		Vireo::Ref<Vireo::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Vireo::VertexBuffer::Create(vertices, sizeof(vertices)));
 		Vireo::BufferLayout layout = {
 			{ Vireo::ShaderDataType::Float3, "a_Position" },
@@ -30,7 +30,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Vireo::IndexBuffer> indexBuffer;
+		Vireo::Ref<Vireo::IndexBuffer> indexBuffer;
 		indexBuffer.reset(Vireo::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -43,7 +43,7 @@ public:
 			-0.75f,  0.75f, 0.0f
 		};
 
-		std::shared_ptr<Vireo::VertexBuffer> squareVB;
+		Vireo::Ref<Vireo::VertexBuffer> squareVB;
 		squareVB.reset(Vireo::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
 			{ Vireo::ShaderDataType::Float3, "a_Position" }
@@ -51,7 +51,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Vireo::IndexBuffer> squareIB;
+		Vireo::Ref<Vireo::IndexBuffer> squareIB;
 		squareIB.reset(Vireo::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -187,11 +187,11 @@ public:
 	{
 	}
 private:
-	std::shared_ptr<Vireo::Shader> m_Shader;
-	std::shared_ptr<Vireo::VertexArray> m_VertexArray;
+	Vireo::Ref<Vireo::Shader> m_Shader;
+	Vireo::Ref<Vireo::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Vireo::Shader> m_FlatColorShader;
-	std::shared_ptr<Vireo::VertexArray> m_SquareVA;
+	Vireo::Ref<Vireo::Shader> m_FlatColorShader;
+	Vireo::Ref<Vireo::VertexArray> m_SquareVA;
 
 	Vireo::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
@@ -201,6 +201,7 @@ private:
 	float m_CameraRotationSpeed = 180.0f;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };
+
 
 
 
