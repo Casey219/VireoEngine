@@ -17,6 +17,7 @@ IncludeDir["GLFW"]="ThirdParty/GLFW/include"
 IncludeDir["GLAD"]="ThirdParty/GLAD/include"
 IncludeDir["imgui"]="ThirdParty/imgui"
 IncludeDir["glm"]="ThirdParty/glm"
+IncludeDir["stb_image"]="ThirdParty/stb_image"
 
 group "ThirdParty"
 	include "ThirdParty/GLFW"
@@ -42,6 +43,8 @@ project "VireoEngine"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{IncludeDir.stb_image}/**.h",
+		"%{IncludeDir.stb_image}/**.cpp",
 		"%{IncludeDir.glm}/glm/glm/**.hpp",
 		"%{IncludeDir.glm}/glm.glm/**.inl"
 
@@ -59,7 +62,8 @@ project "VireoEngine"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 	links
 	{
