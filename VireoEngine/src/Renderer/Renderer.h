@@ -1,7 +1,7 @@
 #pragma once
 #include<Renderer/RendererAPI.h>
 
-#include "OrthographicCamera.h"
+#include "Camera/OrthographicCamera.h"
 #include "Shader.h"
 
 namespace Vireo {

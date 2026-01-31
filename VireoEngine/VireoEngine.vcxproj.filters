@@ -105,7 +105,7 @@
     <ClInclude Include="src\Renderer\GraphicsContext.h">
       <Filter>src\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\OrthographicCamera.h">
+    <ClInclude Include="src\Camera\OrthographicCamera.h">
       <Filter>src\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\RenderCommand.h">
@@ -138,6 +138,7 @@
     <ClInclude Include="src\virpch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Camera\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp">
@@ -188,7 +189,7 @@
     <ClCompile Include="src\Renderer\Buffer.cpp">
       <Filter>src\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\OrthographicCamera.cpp">
+    <ClCompile Include="src\Camera\OrthographicCamera.cpp">
       <Filter>src\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\RenderCommand.cpp">
@@ -212,5 +213,6 @@
     <ClCompile Include="src\virpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>
