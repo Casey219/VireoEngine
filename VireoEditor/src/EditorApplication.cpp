@@ -12,7 +12,7 @@ class ExampleLayer : public Vireo::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_CameraController(1280.0f / 720.0f)
+		: Layer("Example"), m_CameraController(1600.0f / 1000.0f)
 	{
 		m_VertexArray=Vireo::VertexArray::Create();
 

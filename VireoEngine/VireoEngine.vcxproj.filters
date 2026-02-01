@@ -139,6 +139,7 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Camera\OrthographicCameraController.h" />
+    <ClInclude Include="src\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp">
@@ -214,5 +215,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera\OrthographicCameraController.cpp" />
+    <ClCompile Include="src\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
 #pragma once
+#include "Application.h"
+#include "Logger.h"
 
 #ifdef VIR_PLATFORM_WINDOWS
 

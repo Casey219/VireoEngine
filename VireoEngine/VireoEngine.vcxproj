@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\ThirdParty\stb_image\stb_image.h" />
+    <ClInclude Include="src\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Camera\OrthographicCameraController.h" />
     <ClInclude Include="src\Core\Core.h" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Camera\OrthographicCameraController.cpp" />
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
