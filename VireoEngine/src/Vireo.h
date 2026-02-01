@@ -7,9 +7,6 @@
 
 #include"Core/Logger.h"
 
-//--------------entry point------------//
-#include"Core/EntryPoint.h"
-//--------------entry point------------//
 
 
 #include "Core/Input.h"
@@ -29,7 +26,7 @@
 #include "Renderer/VertexArray.h"
 
 
-#include "Camera/OrthographicCamera.h"
+#include <Camera/OrthographicCameraController.h>
 
 #include<Renderer/Texture.h>
 // -----------------------------------

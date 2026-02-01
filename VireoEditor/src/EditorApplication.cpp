@@ -1,19 +1,20 @@
 #include<Vireo.h>
+#include"Core/EntryPoint.h"
 #include<glm/glm.hpp>
 #include <imgui.h>
 #include <Events/KeyEvent.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <Platform/OpenGL/OpenGLShader.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <Camera/OrthographicCameraController.h>
 
+#include "Sandbox2D.h"
 class ExampleLayer : public Vireo::Layer
 {
 public:
 	ExampleLayer()
 		: Layer("Example"), m_CameraController(1280.0f / 720.0f)
 	{
-		m_VertexArray.reset(Vireo::VertexArray::Create());
+		m_VertexArray=Vireo::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -35,7 +36,7 @@ public:
 		indexBuffer.reset(Vireo::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(Vireo::VertexArray::Create());
+		m_SquareVA=Vireo::VertexArray::Create();
 
 		float squareVertices[5 * 4] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -220,7 +221,9 @@ private:
 class EditorApplication :public Vireo::Application {
 public:
 	EditorApplication() {
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
+
 	}
 	~EditorApplication() {
 
