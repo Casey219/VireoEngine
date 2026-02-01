@@ -1,8 +1,8 @@
 #pragma once
 
-#include<Core.h>
+#include"Core/Core.h"
 #include<Events/Event.h>
-#include <Timestep.h>
+#include "Core/Timestep.h"
 
 namespace Vireo {
 

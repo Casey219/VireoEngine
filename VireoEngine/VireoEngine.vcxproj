@@ -147,21 +147,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\ThirdParty\stb_image\stb_image.h" />
-    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Camera\OrthographicCameraController.h" />
-    <ClInclude Include="src\Core.h" />
-    <ClInclude Include="src\EntryPoint.h" />
+    <ClInclude Include="src\Core\Core.h" />
+    <ClInclude Include="src\Core\EntryPoint.h" />
     <ClInclude Include="src\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Events\Event.h" />
     <ClInclude Include="src\Events\KeyEvent.h" />
     <ClInclude Include="src\Events\MouseEvent.h" />
     <ClInclude Include="src\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\KeyCodes.h" />
-    <ClInclude Include="src\Layer.h" />
-    <ClInclude Include="src\LayerStack.h" />
-    <ClInclude Include="src\Logger.h" />
-    <ClInclude Include="src\MouseButtonCodes.h" />
+    <ClInclude Include="src\Core\Input.h" />
+    <ClInclude Include="src\Core\KeyCodes.h" />
+    <ClInclude Include="src\Core\Layer.h" />
+    <ClInclude Include="src\Core\LayerStack.h" />
+    <ClInclude Include="src\Core\Logger.h" />
+    <ClInclude Include="src\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -179,20 +179,20 @@
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Texture.h" />
     <ClInclude Include="src\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Timestep.h" />
+    <ClInclude Include="src\Core\Timestep.h" />
     <ClInclude Include="src\Vireo.h" />
-    <ClInclude Include="src\Window.h" />
+    <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\virpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp" />
-    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Camera\OrthographicCameraController.cpp" />
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Layer.cpp" />
-    <ClCompile Include="src\LayerStack.cpp" />
-    <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\Core\Layer.cpp" />
+    <ClCompile Include="src\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Core\Logger.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />

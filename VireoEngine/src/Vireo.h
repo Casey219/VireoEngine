@@ -1,24 +1,24 @@
 #pragma once
 
-#include"Core.h"
+#include"Core/Core.h"
 
 
-#include"Application.h"
+#include"Core/Application.h"
 
-#include"Logger.h"
+#include"Core/Logger.h"
 
 //--------------entry point------------//
-#include"EntryPoint.h"
+#include"Core/EntryPoint.h"
 //--------------entry point------------//
 
 
-#include "Input.h"
-#include "KeyCodes.h"
-#include "MouseButtonCodes.h"
+#include "Core/Input.h"
+#include "Core/KeyCodes.h"
+#include "Core/MouseButtonCodes.h"
 
 #include<ImGui/ImGuiLayer.h>
 
-#include "Timestep.h"
+#include "Core/Timestep.h"
 
 // ---Renderer------------------------
 #include "Renderer/Renderer.h"

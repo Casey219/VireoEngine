@@ -1,8 +1,8 @@
 #pragma once
 #include "OrthographicCamera.h"
 #include <Events/MouseEvent.h>
-#include <Timestep.h>
-#include <Events/ApplicationEvent.h>
+#include "Core/Timestep.h"
+#include "Events/ApplicationEvent.h"
 
 
 namespace Vireo {

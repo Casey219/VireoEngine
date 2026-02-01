@@ -2,8 +2,8 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include<Logger.h>
-#include <Core.h>
+#include"Core/Logger.h"
+#include "Core/Core.h"
 #include "OpenGLContext.h"
 
 

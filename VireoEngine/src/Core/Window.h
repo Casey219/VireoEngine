@@ -1,8 +1,8 @@
 #pragma once
-#include<Core.h>
+#include"Core.h"
 #include<string>
 #include<functional>
-#include<Events/Event.h>
+#include"Events/Event.h"
 namespace Vireo {
 	struct WindowProps
 	{
