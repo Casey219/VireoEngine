@@ -1,19 +1,19 @@
 #pragma once
 #include<memory>
 
-#ifdef VIR_PLATFORM_WINDOWS
-#if VIR_DYNAMIC_LINK
-	#ifdef VIR_BUILD_DLL
-		#define VIR_API  _declspec(dllexport)
-	#else
-		#define VIR_API _declspec(dllimport)
-	#endif
-#else 
-#define VIR_API
-#endif
-#else
-	#error only support Windows!
-#endif
+//#ifdef VIR_PLATFORM_WINDOWS
+//#if VIR_DYNAMIC_LINK
+//	#ifdef VIR_BUILD_DLL
+//		#define VIR_API  _declspec(dllexport)
+//	#else
+//		#define VIR_API _declspec(dllimport)
+//	#endif
+//#else 
+//#define VIR_API
+//#endif
+//#else
+//	#error only support Windows!
+//#endif
 
 #ifdef VIR_DEBUG
 	#define VIR_ENABLE_ASSERTS

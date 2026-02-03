@@ -216,5 +216,6 @@
     </ClCompile>
     <ClCompile Include="src\Camera\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="src\Renderer\GraphicsContext.cpp" />
   </ItemGroup>
 </Project>

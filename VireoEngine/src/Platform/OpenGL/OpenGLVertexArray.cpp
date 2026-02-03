@@ -8,17 +8,17 @@ namespace Vireo {
 	{
 		switch (type)
 		{
-		case Vireo::ShaderDataType::Float:    return GL_FLOAT;
-		case Vireo::ShaderDataType::Float2:   return GL_FLOAT;
-		case Vireo::ShaderDataType::Float3:   return GL_FLOAT;
-		case Vireo::ShaderDataType::Float4:   return GL_FLOAT;
-		case Vireo::ShaderDataType::Mat3:     return GL_FLOAT;
-		case Vireo::ShaderDataType::Mat4:     return GL_FLOAT;
-		case Vireo::ShaderDataType::Int:      return GL_INT;
-		case Vireo::ShaderDataType::Int2:     return GL_INT;
-		case Vireo::ShaderDataType::Int3:     return GL_INT;
-		case Vireo::ShaderDataType::Int4:     return GL_INT;
-		case Vireo::ShaderDataType::Bool:     return GL_BOOL;
+		case ShaderDataType::Float:    return GL_FLOAT;
+		case ShaderDataType::Float2:   return GL_FLOAT;
+		case ShaderDataType::Float3:   return GL_FLOAT;
+		case ShaderDataType::Float4:   return GL_FLOAT;
+		case ShaderDataType::Mat3:     return GL_FLOAT;
+		case ShaderDataType::Mat4:     return GL_FLOAT;
+		case ShaderDataType::Int:      return GL_INT;
+		case ShaderDataType::Int2:     return GL_INT;
+		case ShaderDataType::Int3:     return GL_INT;
+		case ShaderDataType::Int4:     return GL_INT;
+		case ShaderDataType::Bool:     return GL_BOOL;
 		}
 
 		VIR_CORE_ASSERT(false, "Unknown ShaderDataType!");

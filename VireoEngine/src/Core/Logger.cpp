@@ -5,8 +5,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h> 
 
 namespace Vireo {
-	std::shared_ptr<spdlog::logger> Logger::s_CoreLogger;
-	std::shared_ptr<spdlog::logger> Logger::s_ClientLogger;
+	Ref<spdlog::logger> Logger::s_CoreLogger;
+	Ref<spdlog::logger> Logger::s_ClientLogger;
 
 	void Logger::Init() {
 		spdlog::set_pattern("%^[%T] %n: %v%$");

@@ -9,8 +9,6 @@
 #include "Renderer/Renderer.h"
 #include <GLFW/glfw3.h>
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
 
 
 namespace Vireo {
@@ -23,8 +21,8 @@ namespace Vireo {
 		s_Instance = this;
 
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window = Window::Create();
+		m_Window->SetEventCallback(VIR_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 
@@ -35,7 +33,7 @@ namespace Vireo {
 	}
 
 	Application::~Application() {
-
+		Renderer::Shutdown();
 	}
 
 	
@@ -86,8 +84,8 @@ namespace Vireo {
 
 	void Application::OnEvent(Event& e) {
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(VIR_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(VIR_BIND_EVENT_FN(Application::OnWindowResize));
 		//VIR_CORE_TRACE( e.ToString());
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
 			(*--it)->OnEvent(e);

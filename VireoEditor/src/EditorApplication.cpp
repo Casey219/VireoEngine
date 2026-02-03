@@ -22,8 +22,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		Vireo::Ref<Vireo::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Vireo::VertexBuffer::Create(vertices, sizeof(vertices)));
+		Vireo::Ref<Vireo::VertexBuffer> vertexBuffer=Vireo::VertexBuffer::Create(vertices, sizeof(vertices));
 		Vireo::BufferLayout layout = {
 			{ Vireo::ShaderDataType::Float3, "a_Position" },
 			{ Vireo::ShaderDataType::Float4, "a_Color" }
@@ -32,8 +31,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		Vireo::Ref<Vireo::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Vireo::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		Vireo::Ref<Vireo::IndexBuffer> indexBuffer=Vireo::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		m_SquareVA=Vireo::VertexArray::Create();
@@ -47,8 +45,7 @@ public:
 
 
 
-		Vireo::Ref<Vireo::VertexBuffer> squareVB;
-		squareVB.reset(Vireo::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		Vireo::Ref<Vireo::VertexBuffer> squareVB=Vireo::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ Vireo::ShaderDataType::Float3, "a_Position" },
 			{ Vireo::ShaderDataType::Float2, "a_TexCoord" }
@@ -56,8 +53,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		Vireo::Ref<Vireo::IndexBuffer> squareIB;
-		squareIB.reset(Vireo::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		Vireo::Ref<Vireo::IndexBuffer> squareIB=Vireo::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
@@ -143,8 +139,8 @@ public:
 
 		//std::dynamic_pointer_cast<Vireo::OpenGLShader>(m_TextureShader)->Bind();
 		//std::dynamic_pointer_cast<Vireo::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
-		std::dynamic_pointer_cast<Vireo::OpenGLShader>(textureShader)->Bind();
-		std::dynamic_pointer_cast<Vireo::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
+		textureShader->Bind();
+		textureShader->SetInt("u_Texture", 0);
 
 	}
 
@@ -163,8 +159,8 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		std::dynamic_pointer_cast<Vireo::OpenGLShader>(m_FlatColorShader)->Bind();
-		std::dynamic_pointer_cast<Vireo::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_Color", m_SquareColor);
+		m_FlatColorShader->Bind();
+		m_FlatColorShader->SetFloat3("u_Color", m_SquareColor);
 
 		for (int y = 0; y < 5; y++)
 		{
