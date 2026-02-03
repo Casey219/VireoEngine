@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <Renderer/Renderer2D.h>
-
+#include "Debug/Instrumentor.h"
 
 
 Sandbox2D::Sandbox2D()
@@ -22,28 +22,42 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Vireo::Timestep ts)
 {
+	VIR_PROFILE_FUNCTION();
+
 	// Update
-	m_CameraController.OnUpdate(ts);
+	{
+		VIR_PROFILE_SCOPE("CameraController::OnUpdate");
+		m_CameraController.OnUpdate(ts);
+	}
 
 	// Render
-	Vireo::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-	Vireo::RenderCommand::Clear();
 
-	Vireo::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	{
+		VIR_PROFILE_SCOPE("Renderer Prep");
+		Vireo::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		Vireo::RenderCommand::Clear();
+	}
 	
-	//Vireo::Renderer::Submit(m_FlatColorShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-	//Vireo::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-	Vireo::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-	//Vireo::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-	Vireo::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
-	Vireo::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
-	Vireo::Renderer2D::EndScene();
+	{
+		VIR_PROFILE_SCOPE("Renderer Draw");
+		Vireo::Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+		//Vireo::Renderer::Submit(m_FlatColorShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Vireo::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+		//Vireo::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+		Vireo::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
+		Vireo::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
+		Vireo::Renderer2D::EndScene();
+	}
+	
 	
 	
 }
 
 void Sandbox2D::OnImGuiRender()
 {
+	VIR_PROFILE_FUNCTION();
+
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 	ImGui::End();

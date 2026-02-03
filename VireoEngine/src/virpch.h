@@ -12,6 +12,8 @@
 
 #include"Core/Logger.h"
 
+#include "Debug/Instrumentor.h"
+
 #ifdef VIR_PLATFORM_WINDOWS
 	#include<Windows.h>
 #endif
