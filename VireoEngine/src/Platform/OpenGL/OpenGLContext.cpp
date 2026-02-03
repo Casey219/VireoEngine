@@ -17,6 +17,8 @@ namespace Vireo {
 
 	void OpenGLContext::Init()
 	{
+		VIR_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		VIR_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -27,6 +29,8 @@ namespace Vireo {
 
 	void OpenGLContext::SwapBuffers()
 	{
+		VIR_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

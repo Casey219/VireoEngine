@@ -11,6 +11,8 @@ namespace Vireo {
 
 	void Renderer::Init()
 	{
+		VIR_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
 	}

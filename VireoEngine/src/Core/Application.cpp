@@ -17,6 +17,8 @@ namespace Vireo {
 	
 	Application::Application() 
 	{
+		VIR_PROFILE_FUNCTION();
+
 		VIR_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -33,6 +35,8 @@ namespace Vireo {
 	}
 
 	Application::~Application() {
+		VIR_PROFILE_FUNCTION();
+
 		Renderer::Shutdown();
 	}
 
@@ -40,49 +44,61 @@ namespace Vireo {
 
 	void Application::PushLayer(Layer* layer)
 	{
+		VIR_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer)
 	{
+		VIR_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
 
 
 	void Application::Run() {
-		WindowResizeEvent e(1200, 800);
-		
+		VIR_PROFILE_FUNCTION();
+
 		while (m_Running)
 		{
+			VIR_PROFILE_SCOPE("RunLoop");
+
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Minimized)
 			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+				{
+					VIR_PROFILE_SCOPE("LayerStack OnUpdate");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
+
+				m_ImGuiLayer->Begin();
+				{
+					VIR_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
 			}
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
-
-			//auto [x, y] = Input::GetMousePosition();
-			//VIR_CORE_ERROR("{0}, {1}", x, y);
-
-			m_Window->OnUpdate();
+			m_Window->OnUpdate();	
 
 		}
-
 
 	}
 
 
 	void Application::OnEvent(Event& e) {
+		VIR_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(VIR_BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(VIR_BIND_EVENT_FN(Application::OnWindowResize));
@@ -103,6 +119,8 @@ namespace Vireo {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		VIR_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			m_Minimized = true;

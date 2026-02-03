@@ -15,6 +15,8 @@ namespace Vireo{
 	
 
 	void ImGuiLayer::OnAttach() {
+
+		VIR_PROFILE_FUNCTION();
 		
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
@@ -50,6 +52,8 @@ namespace Vireo{
 	}
 
 	void ImGuiLayer::OnDetach() {
+		VIR_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -58,6 +62,8 @@ namespace Vireo{
 	
 	void ImGuiLayer::Begin()
 	{
+		VIR_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -65,6 +71,8 @@ namespace Vireo{
 
 	void ImGuiLayer::End()
 	{
+		VIR_PROFILE_FUNCTION();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(),(float) app.GetWindow().GetHeight());

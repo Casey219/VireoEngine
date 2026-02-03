@@ -13,11 +13,14 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+	VIR_PROFILE_FUNCTION();
+
 	m_CheckerboardTexture = Vireo::Texture2D::Create("assets/textures/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
 {
+	VIR_PROFILE_FUNCTION();
 }
 
 void Sandbox2D::OnUpdate(Vireo::Timestep ts)
@@ -25,10 +28,9 @@ void Sandbox2D::OnUpdate(Vireo::Timestep ts)
 	VIR_PROFILE_FUNCTION();
 
 	// Update
-	{
-		VIR_PROFILE_SCOPE("CameraController::OnUpdate");
-		m_CameraController.OnUpdate(ts);
-	}
+	
+	m_CameraController.OnUpdate(ts);
+	
 
 	// Render
 
