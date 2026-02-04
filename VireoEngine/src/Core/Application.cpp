@@ -103,8 +103,8 @@ namespace Vireo {
 		dispatcher.Dispatch<WindowCloseEvent>(VIR_BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(VIR_BIND_EVENT_FN(Application::OnWindowResize));
 		//VIR_CORE_TRACE( e.ToString());
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
-			(*--it)->OnEvent(e);
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it){
+			(*it)->OnEvent(e);
 			if (e.Handled)
 				break;
 		}
