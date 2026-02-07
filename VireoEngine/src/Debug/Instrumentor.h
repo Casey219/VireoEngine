@@ -124,7 +124,7 @@ namespace Vireo {
 	};
 }
 
-#define VIR_PROFILE 1
+#define VIR_PROFILE 0
 #if VIR_PROFILE
 #define VIR_PROFILE_BEGIN_SESSION(name, filepath) ::Vireo::Instrumentor::Get().BeginSession(name, filepath)
 #define VIR_PROFILE_END_SESSION() ::Vireo::Instrumentor::Get().EndSession()
