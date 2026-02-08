@@ -58,6 +58,11 @@ namespace Vireo {
 		layer->OnAttach();
 	}
 
+	void Application::Close()
+	{
+		m_Running = false;
+	}
+
 
 	void Application::Run() {
 		VIR_PROFILE_FUNCTION();

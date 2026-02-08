@@ -16,6 +16,8 @@ namespace Vireo {
 
 		inline Window& GetWindow() { return *m_Window; }
 
+		void Close();
+
 		inline static Application& Get() { return *s_Instance; }
 
 		void Run();
