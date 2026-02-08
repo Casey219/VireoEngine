@@ -1,6 +1,6 @@
 #pragma once
 
-#include"Core/Core.h"
+#include"Core/Base.h"
 
 
 #include"Core/Application.h"
@@ -23,6 +23,7 @@
 
 #include "Renderer/Buffer.h"
 #include "Renderer/Shader.h"
+#include "Renderer/Framebuffer.h"
 #include "Renderer/VertexArray.h"
 
 

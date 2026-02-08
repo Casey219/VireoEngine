@@ -1,7 +1,7 @@
 #include "virpch.h"
 #include "Shader.h"
 #include<glad/glad.h>
-#include"Core/Core.h"
+#include"Core/Base.h"
 #include <glm/gtc/type_ptr.hpp>
 #include"Platform/OpenGL/OpenGLShader.h"
 #include"Renderer/Renderer.h"

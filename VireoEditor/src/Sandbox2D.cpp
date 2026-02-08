@@ -16,6 +16,10 @@ void Sandbox2D::OnAttach()
 	VIR_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = Vireo::Texture2D::Create("assets/textures/Checkerboard.png");
+	Vireo::FramebufferSpecification fbSpec;
+	fbSpec.Width = 1600;
+	fbSpec.Height = 1000;
+	m_Framebuffer = Vireo::Framebuffer::Create(fbSpec);
 }
 
 void Sandbox2D::OnDetach()
@@ -33,9 +37,10 @@ void Sandbox2D::OnUpdate(Vireo::Timestep ts)
 	
 
 	// Render
-
+	Vireo::Renderer2D::ResetStats();
 	{
 		VIR_PROFILE_SCOPE("Renderer Prep");
+		m_Framebuffer->Bind();
 		Vireo::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Vireo::RenderCommand::Clear();
 	}
@@ -64,6 +69,7 @@ void Sandbox2D::OnUpdate(Vireo::Timestep ts)
 			}
 		}
 		Vireo::Renderer2D::EndScene();
+		m_Framebuffer->Unbind();
 	}
 	
 	
@@ -139,17 +145,17 @@ void Sandbox2D::OnImGuiRender()
 
 		ImGui::Begin("Settings");
 
-		auto stats = Vireo::Renderer2D::GetStats();
+		/*auto stats = Vireo::Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));*/
 
-		uint32_t textureID = m_CheckerboardTexture->GetRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f });
+		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		ImGui::Image((void*)textureID, ImVec2{ 1600, 1000});
 		ImGui::End();
 
 		ImGui::End();
@@ -168,7 +174,7 @@ void Sandbox2D::OnImGuiRender()
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
 		uint32_t textureID = m_CheckerboardTexture->GetRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f });
+		ImGui::Image((void*)textureID, ImVec2{ 1600.0f, 1000.0f });
 		ImGui::End();
 	}
 

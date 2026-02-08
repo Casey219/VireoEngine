@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include"Core/Logger.h"
-#include "Core/Core.h"
+#include "Core/Base.h"
 #include "OpenGLContext.h"
 
 
