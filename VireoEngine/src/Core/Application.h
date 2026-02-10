@@ -12,6 +12,7 @@ namespace Vireo {
 	{
 	public:
 		Application();
+		Application(const std::string& name = "Vireo App");
 		virtual ~Application();
 
 		inline Window& GetWindow() { return *m_Window; }

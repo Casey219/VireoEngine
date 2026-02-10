@@ -15,7 +15,7 @@ namespace Vireo {
 	Application* Application::s_Instance = nullptr;
 
 	
-	Application::Application() 
+	Application::Application(const std::string& name)
 	{
 		VIR_PROFILE_FUNCTION();
 
@@ -23,7 +23,7 @@ namespace Vireo {
 		s_Instance = this;
 
 
-		m_Window = Window::Create();
+		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(VIR_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();

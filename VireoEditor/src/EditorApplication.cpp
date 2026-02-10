@@ -1,29 +1,26 @@
 #include<Vireo.h>
 #include"Core/EntryPoint.h"
-#include<glm/glm.hpp>
-#include <imgui.h>
-#include <Events/KeyEvent.h>
-#include <glm/ext/matrix_transform.hpp>
-#include <Platform/OpenGL/OpenGLShader.h>
-#include <glm/gtc/type_ptr.hpp>
 
 #include "Sandbox2D.h"
 #include "ExampleLayer.h"
+#include "EditorLayer.h"
+
+namespace Vireo {
+	class EditorApplication :public Application {
+	public:
+		EditorApplication() 
+			: Application("VireoEditor") {
+			PushLayer(new EditorLayer());
+		}
+		~EditorApplication() {
+
+		}
+
+	};
 
 
-class EditorApplication :public Vireo::Application {
-public:
-	EditorApplication() {
-		//PushLayer(new ExampleLayer());
-		PushLayer(new Sandbox2D());
+	Application* CreateApplication() {
+		return new EditorApplication();
 	}
-	~EditorApplication() {
 
-	}
-
-};
-
-
-Vireo::Application* Vireo::CreateApplication() {
-	return new EditorApplication();
 }
