@@ -11,7 +11,7 @@
 
 #include "Core/Input.h"
 #include "Core/KeyCodes.h"
-#include "Core/MouseButtonCodes.h"
+#include "Core/MouseCodes.h"
 
 #include<ImGui/ImGuiLayer.h>
 
