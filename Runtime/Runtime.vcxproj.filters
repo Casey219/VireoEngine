@@ -170,6 +170,7 @@
     </ClInclude>
     <ClInclude Include="src\Scene\Entity.h" />
     <ClInclude Include="src\Camera\Camera.h" />
+    <ClInclude Include="src\Scene\SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp">
@@ -263,5 +264,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Entity.cpp" />
+    <ClCompile Include="src\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>
