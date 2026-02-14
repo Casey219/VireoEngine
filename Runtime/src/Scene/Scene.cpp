@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Components.h"
 #include "Renderer/Renderer2D.h"
+#include "Entity.h"
 namespace Vireo {
 	static void DoMath(const glm::mat4& transform)
 	{
@@ -44,9 +45,17 @@ namespace Vireo {
 	{
 	}
 
-	entt::entity Scene::CreateEntity()
+	
+	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return m_Registry.create();
+		// 创建 entt 实体
+		entt::entity entityHandle = m_Registry.create();
+		// 用 Entity 包装 entt::entity
+		Entity entity{ entityHandle, this };
+		entity.AddComponent<TransformComponent>();
+		auto& tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Entity" : name;
+		return entity;
 	}
 
 	void Scene::OnUpdate(Timestep ts)

@@ -168,6 +168,7 @@
     <ClInclude Include="src\virpch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp">
@@ -260,5 +261,6 @@
     <ClCompile Include="src\virpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\Entity.cpp" />
   </ItemGroup>
 </Project>

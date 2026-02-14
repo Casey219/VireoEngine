@@ -185,6 +185,7 @@
     <ClInclude Include="src\Renderer\Texture.h" />
     <ClInclude Include="src\Renderer\VertexArray.h" />
     <ClInclude Include="src\Scene\Components.h" />
+    <ClInclude Include="src\Scene\Entity.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Vireo.h" />
     <ClInclude Include="src\virpch.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Renderer\Texture.cpp" />
     <ClCompile Include="src\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\virpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
