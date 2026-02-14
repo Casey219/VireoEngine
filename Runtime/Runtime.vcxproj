@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\ThirdParty\stb_image\stb_image.h" />
+    <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\OrthographicCamera.h" />
     <ClInclude Include="src\Camera\OrthographicCameraController.h" />
     <ClInclude Include="src\Core\Application.h" />

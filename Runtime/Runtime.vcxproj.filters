@@ -169,6 +169,7 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\Entity.h" />
+    <ClInclude Include="src\Camera\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp">
