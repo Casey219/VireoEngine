@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Debug/Instrumentor.h>
 #include <Renderer/Renderer2D.h>
+#include	"Core/KeyCodes.h"
 
 namespace Vireo {
 	EditorLayer::EditorLayer()
@@ -28,6 +29,7 @@ namespace Vireo {
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Green Square");
 		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+		m_SquareEntity = square;
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
 		m_CameraEntity.AddComponent<CameraComponent>();
@@ -36,7 +38,35 @@ namespace Vireo {
 		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
 		cc.Primary = false;
 
-		m_SquareEntity = square;
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+			}
+
+			void OnDestroy()
+			{
+			}
+
+			void OnUpdate(Timestep ts)
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed(Key::A))
+					transform[3][0] -= speed * ts;
+				if (Input::IsKeyPressed(Key::D))
+					transform[3][0] += speed * ts;
+				if (Input::IsKeyPressed(Key::W))
+					transform[3][1] += speed * ts;
+				if (Input::IsKeyPressed(Key::S))
+					transform[3][1] -= speed * ts;
+			}
+		};
+
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		
 	}
 
 	void EditorLayer::OnDetach()

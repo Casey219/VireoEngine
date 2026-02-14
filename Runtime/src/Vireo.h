@@ -18,6 +18,7 @@
 #include "Core/Timestep.h"
 
 #include "Scene/Entity.h"
+#include "Scene/ScriptableEntity.h"
 #include "Scene/Components.h"
 #include "Scene/Scene.h"
 
