@@ -16,12 +16,20 @@ namespace Vireo {
 	{
 		VIR_PROFILE_FUNCTION();
 
-		m_CheckerboardTexture = Vireo::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
 
-		Vireo::FramebufferSpecification fbSpec;
+		FramebufferSpecification fbSpec;
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
-		m_Framebuffer = Vireo::Framebuffer::Create(fbSpec);
+		m_Framebuffer = Framebuffer::Create(fbSpec);
+
+		m_ActiveScene = CreateRef<Scene>();
+
+		auto square = m_ActiveScene->CreateEntity();
+		m_ActiveScene->Reg().emplace<TransformComponent>(square);
+		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(square, glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+
+		m_SquareEntity = square;
 	}
 
 	void EditorLayer::OnDetach()
@@ -29,7 +37,7 @@ namespace Vireo {
 		VIR_PROFILE_FUNCTION();
 	}
 
-	void EditorLayer::OnUpdate(Vireo::Timestep ts)
+	void EditorLayer::OnUpdate(Timestep ts)
 	{
 		VIR_PROFILE_FUNCTION();
 
@@ -38,15 +46,13 @@ namespace Vireo {
 			m_CameraController.OnUpdate(ts);
 
 		// Render
-		Vireo::Renderer2D::ResetStats();
-		{
-			VIR_PROFILE_SCOPE("Renderer Prep");
-			m_Framebuffer->Bind();
-			Vireo::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-			Vireo::RenderCommand::Clear();
-		}
+		Renderer2D::ResetStats();
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		RenderCommand::Clear();
+		
 
-		{
+		/*{
 			static float rotation = 0.0f;
 			rotation += ts * 50.0f;
 
@@ -70,7 +76,16 @@ namespace Vireo {
 			}
 			Vireo::Renderer2D::EndScene();
 			m_Framebuffer->Unbind();
-		}
+		}*/
+
+		Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+		// Update scene
+		m_ActiveScene->OnUpdate(ts);
+
+		Renderer2D::EndScene();
+
+		m_Framebuffer->Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -130,7 +145,7 @@ namespace Vireo {
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
-				if (ImGui::MenuItem("Exit")) Vireo::Application::Get().Close();
+				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
 
@@ -139,14 +154,15 @@ namespace Vireo {
 
 		ImGui::Begin("Settings");
 
-		auto stats = Vireo::Renderer2D::GetStats();
+		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+		auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;
+		ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
 
 		ImGui::End();
 
@@ -158,7 +174,7 @@ namespace Vireo {
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
 		{
 			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -173,7 +189,7 @@ namespace Vireo {
 		ImGui::End();
 	}
 
-	void EditorLayer::OnEvent(Vireo::Event& e)
+	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
 	}

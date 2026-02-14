@@ -1,6 +1,6 @@
 workspace "VireoEngine"
 	architecture "x86_64"
-	startproject "VireoEditor"
+	startproject "Editor"
 
 	configurations
 	{
@@ -18,6 +18,7 @@ IncludeDir["GLAD"]="ThirdParty/GLAD/include"
 IncludeDir["imgui"]="ThirdParty/imgui"
 IncludeDir["glm"]="ThirdParty/glm"
 IncludeDir["stb_image"]="ThirdParty/stb_image"
+IncludeDir["entt"] = "ThirdParty/entt/include"
 
 group "ThirdParty"
 	include "ThirdParty/GLFW"
@@ -26,8 +27,8 @@ group "ThirdParty"
 group ""
 
 
-project "VireoEngine"
-	location "VireoEngine"
+project "Runtime"
+	location "Runtime"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
@@ -37,7 +38,7 @@ project "VireoEngine"
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 	pchheader "virpch.h"
-	pchsource "VireoEngine/src/virpch.cpp"
+	pchsource "Runtime/src/virpch.cpp"
 
 	files
 	{
@@ -63,7 +64,8 @@ project "VireoEngine"
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 	links
 	{
@@ -100,8 +102,8 @@ project "VireoEngine"
     
     filter "action:vs*" --add utf-8 for spdlog
         buildoptions { "/utf-8" }
-project "VireoEditor"
-	location "VireoEditor"
+project "Editor"
+	location "Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -119,14 +121,15 @@ project "VireoEditor"
 	includedirs
 	{
 		"ThirdParty/spdlog/include", 
-		"VireoEngine/src",
+		"Runtime/src",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
 	{
-		"VireoEngine"
+		"Runtime"
 	}
 
 	filter "system:windows"

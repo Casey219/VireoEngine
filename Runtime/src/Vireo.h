@@ -17,6 +17,10 @@
 
 #include "Core/Timestep.h"
 
+#include "Scene/Components.h"
+#include "Scene/Scene.h"
+
+
 // ---Renderer------------------------
 #include "Renderer/Renderer.h"
 #include "Renderer/RenderCommand.h"
