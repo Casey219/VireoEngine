@@ -111,7 +111,7 @@ namespace Vireo {
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
-		//component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
 
 	template<>
