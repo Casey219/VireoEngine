@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -99,7 +99,7 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -125,7 +125,7 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -190,6 +190,7 @@
     <ClInclude Include="src\Scene\Entity.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Vireo.h" />
     <ClInclude Include="src\virpch.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Scene\SceneSerializer.cpp" />
     <ClCompile Include="src\virpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -239,6 +241,9 @@
     </ProjectReference>
     <ProjectReference Include="..\ThirdParty\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ThirdParty\yaml-cpp\yaml-cpp.vcxproj">
+      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

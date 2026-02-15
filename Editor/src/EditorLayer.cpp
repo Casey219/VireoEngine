@@ -5,7 +5,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Debug/Instrumentor.h>
 #include <Renderer/Renderer2D.h>
-#include	"Core/KeyCodes.h"
+#include "Core/KeyCodes.h"
+
+#include "Scene/SceneSerializer.h"
 
 namespace Vireo {
 	EditorLayer::EditorLayer()
@@ -25,13 +27,14 @@ namespace Vireo {
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		m_ActiveScene = CreateRef<Scene>();
-
+#if 1
 		// Entity
+		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
+		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 		auto square = m_ActiveScene->CreateEntity("Green Square");
 		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
 
-		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
-		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+		
 
 		m_SquareEntity = square;
 
@@ -73,7 +76,7 @@ namespace Vireo {
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-	
+#endif
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
@@ -106,33 +109,7 @@ namespace Vireo {
 		m_Framebuffer->Bind();
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
-		
 
-		/*{
-			static float rotation = 0.0f;
-			rotation += ts * 50.0f;
-
-			VIR_PROFILE_SCOPE("Renderer Draw");
-			Vireo::Renderer2D::BeginScene(m_CameraController.GetCamera());
-			Vireo::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
-			Vireo::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-			Vireo::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
-			Vireo::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
-			Vireo::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
-			Vireo::Renderer2D::EndScene();
-
-			Vireo::Renderer2D::BeginScene(m_CameraController.GetCamera());
-			for (float y = -5.0f; y < 5.0f; y += 0.5f)
-			{
-				for (float x = -5.0f; x < 5.0f; x += 0.5f)
-				{
-					glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
-					Vireo::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
-				}
-			}
-			Vireo::Renderer2D::EndScene();
-			m_Framebuffer->Unbind();
-		}*/
 
 		//Renderer2D::BeginScene(m_CameraController.GetCamera());
 
@@ -205,6 +182,18 @@ namespace Vireo {
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+
+				if (ImGui::MenuItem("Serialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Serialize("assets/scenes/Example.vireo");
+				}
+
+				if (ImGui::MenuItem("Deserialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Deserialize("assets/scenes/Example.vireo");
+				}
 
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();

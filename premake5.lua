@@ -19,11 +19,13 @@ IncludeDir["imgui"]="ThirdParty/imgui"
 IncludeDir["glm"]="ThirdParty/glm"
 IncludeDir["stb_image"]="ThirdParty/stb_image"
 IncludeDir["entt"] = "ThirdParty/entt/include"
+IncludeDir["yaml_cpp"] = "ThirdParty/yaml-cpp/include"
 
 group "ThirdParty"
 	include "ThirdParty/GLFW"
 	include "ThirdParty/GLAD"
 	include "ThirdParty/imgui"
+	include "ThirdParty/yaml-cpp"
 group ""
 
 
@@ -65,14 +67,16 @@ project "Runtime"
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 	links
 	{
 		"GLFW",
 		"GLAD",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"yaml-cpp"
 	}
 
 	filter "system:windows"
@@ -115,7 +119,9 @@ project "Editor"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/Panels/**.h",
+		"%{prj.name}/Panels/**.cpp"
 	}
 
 	includedirs
