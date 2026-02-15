@@ -25,6 +25,8 @@ namespace Vireo {
 
 		VIR_CORE_INFO("OpenGL Renderer: {0}", (const char*)glGetString(GL_RENDERER));
 		VIR_CORE_INFO("OpenGL Version: {0}", (const char*)glGetString(GL_VERSION));
+
+		VIR_CORE_ASSERT(GLVersion.major > 4 || (GLVersion.major == 4 && GLVersion.minor >= 5), "VireoEngine requires at least OpenGL version 4.5!");
 	}
 
 	void OpenGLContext::SwapBuffers()

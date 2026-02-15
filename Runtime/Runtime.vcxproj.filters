@@ -45,6 +45,9 @@
     <ClInclude Include="..\ThirdParty\stb_image\stb_image.h">
       <Filter>ThirdParty\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Camera\Camera.h">
+      <Filter>src\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="src\Camera\OrthographicCamera.h">
       <Filter>src\Camera</Filter>
     </ClInclude>
@@ -159,7 +162,16 @@
     <ClInclude Include="src\Scene\Components.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene\Entity.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Scene\Scene.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\SceneCamera.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\ScriptableEntity.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Vireo.h">
@@ -168,10 +180,7 @@
     <ClInclude Include="src\virpch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scene\Entity.h" />
-    <ClInclude Include="src\Camera\Camera.h" />
-    <ClInclude Include="src\Scene\SceneCamera.h" />
-    <ClInclude Include="src\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Core\PlatformDetection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp">
@@ -258,13 +267,17 @@
     <ClCompile Include="src\Renderer\VertexArray.cpp">
       <Filter>src\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\Entity.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scene\Scene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\SceneCamera.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\virpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\Entity.cpp" />
-    <ClCompile Include="src\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>

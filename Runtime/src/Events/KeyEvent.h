@@ -2,7 +2,7 @@
 
 
 #include"Event.h"
-
+#include "Core/KeyCodes.h"
 
 namespace Vireo {
 
@@ -24,7 +24,7 @@ namespace Vireo {
 	class  KeyPressedEvent : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(int keyCode, int repeatedCount) :KeyEvent(keyCode), m_RepeatedCount(repeatedCount) {}
+		KeyPressedEvent(const KeyCode keyCode, const uint16_t repeatedCount) :KeyEvent(keyCode), m_RepeatedCount(repeatedCount) {}
 		EVENT_TYPE(KeyPressed);
 			std::string ToString() const override
 		{
@@ -32,15 +32,15 @@ namespace Vireo {
 			ss << "KeyPressedEvent-KeyCode" << m_KeyCode << ",RepeatedCount:" << m_RepeatedCount;
 			return ss.str();
 		}
-		inline int GetRepeatedCount() const { return m_RepeatedCount; }
+		inline uint16_t GetRepeatedCount() const { return m_RepeatedCount; }
 	private:
-		int m_RepeatedCount;
+		uint16_t m_RepeatedCount;
 	};
 
 	class  KeyReleasedEvent :public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int keyCode) :KeyEvent(keyCode) {}
+		KeyReleasedEvent(const KeyCode keyCode) :KeyEvent(keyCode) {}
 		EVENT_TYPE(KeyReleased)
 		std::string ToString() const override
 		{
@@ -55,7 +55,7 @@ namespace Vireo {
 	class  KeyTypedEvent :public KeyEvent
 	{
 	public:
-		KeyTypedEvent(int KeyCode) :KeyEvent(KeyCode) {}
+		KeyTypedEvent(const KeyCode KeyCode) :KeyEvent(KeyCode) {}
 
 		EVENT_TYPE(KeyTyped)
 
