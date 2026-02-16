@@ -20,6 +20,7 @@ IncludeDir["glm"]="ThirdParty/glm"
 IncludeDir["stb_image"]="ThirdParty/stb_image"
 IncludeDir["entt"] = "ThirdParty/entt/include"
 IncludeDir["yaml_cpp"] = "ThirdParty/yaml-cpp/include"
+IncludeDir["ImGuizmo"] = "ThirdParty/ImGuizmo"
 
 group "ThirdParty"
 	include "ThirdParty/GLFW"
@@ -49,8 +50,9 @@ project "Runtime"
 		"%{IncludeDir.stb_image}/**.h",
 		"%{IncludeDir.stb_image}/**.cpp",
 		"%{IncludeDir.glm}/glm/glm/**.hpp",
-		"%{IncludeDir.glm}/glm.glm/**.inl"
-
+		"%{IncludeDir.glm}/glm.glm/**.inl",
+		"%{IncludeDir.ImGuizmo}/ImGuizmo.h",
+		"%{IncludeDir.ImGuizmo}/ImGuizmo.cpp",
 	}
 
 	-- defines
@@ -68,7 +70,8 @@ project "Runtime"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 	links
 	{
@@ -78,6 +81,8 @@ project "Runtime"
 		"opengl32.lib",
 		"yaml-cpp"
 	}
+	filter "files:ThirdParty/ImGuizmo/**.cpp"
+	flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest" 
@@ -130,7 +135,8 @@ project "Editor"
 		"Runtime/src",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
