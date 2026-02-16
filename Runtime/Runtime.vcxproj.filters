@@ -186,6 +186,7 @@
     <ClInclude Include="src\virpch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utils\PlatformUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\stb_image\stb_image.cpp">
@@ -287,5 +288,6 @@
     <ClCompile Include="src\virpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 
 #include "Vireo.h"
 #include "../Panels/SceneHierarchyPanel.h"
+#include <Events/KeyEvent.h>
 
 namespace Vireo {
 
@@ -18,6 +19,13 @@ namespace Vireo {
 		void OnUpdate(Timestep ts) override;
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
+
+	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
 	private:
 		Vireo::OrthographicCameraController m_CameraController;
 
