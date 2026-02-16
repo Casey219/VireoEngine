@@ -204,6 +204,7 @@
     <ClInclude Include="src\virpch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Camera\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\ImGuizmo\ImGuizmo.cpp">
@@ -314,5 +315,6 @@
     <ClCompile Include="src\virpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include "Vireo.h"
 #include "../Panels/SceneHierarchyPanel.h"
 #include <Events/KeyEvent.h>
+#include "Camera/EditorCamera.h"
 
 namespace Vireo {
 
@@ -38,6 +39,7 @@ namespace Vireo {
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
+		EditorCamera m_EditorCamera;
 
 		bool m_PrimaryCamera = true;
 

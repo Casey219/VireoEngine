@@ -2,6 +2,7 @@
 #include <Camera/OrthographicCamera.h>
 #include "Texture.h"
 #include "Camera/Camera.h"
+#include "Camera/EditorCamera.h"
 
 namespace Vireo {
 
@@ -12,6 +13,7 @@ namespace Vireo {
 		static void Shutdown();
 
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+		static void BeginScene(const EditorCamera& camera);
 		static void BeginScene(const OrthographicCamera& camera); // TODO: Remove
 		static void EndScene();
 		static void Flush();
@@ -45,5 +47,8 @@ namespace Vireo {
 		static Statistics GetStats();
 	private:
 		static void FlushAndReset();
+	private:
+		static void StartBatch();
+		static void NextBatch();
 	};
 }
