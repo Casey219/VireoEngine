@@ -229,7 +229,6 @@ namespace Vireo {
 
 		std::string name = "None";
 		if (m_HoveredEntity && m_ActiveScene->GetRegistry()->valid((entt::entity)m_HoveredEntity)) // 增加有效性校验
-		//if (m_HoveredEntity) // 增加有效性校验
 		{
 			// 确保实体确实拥有 TagComponent 
 			if (m_HoveredEntity.HasComponent<TagComponent>())
@@ -339,6 +338,7 @@ namespace Vireo {
 		m_EditorCamera.OnEvent(e);
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(VIR_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(VIR_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -387,6 +387,16 @@ namespace Vireo {
 			m_GizmoType = ImGuizmo::OPERATION::SCALE;
 			break;
 		}
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetMouseButton() == Mouse::ButtonLeft)
+		{
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+		}
+		return false;
 	}
 
 	void EditorLayer::NewScene()
