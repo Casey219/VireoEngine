@@ -73,7 +73,21 @@ namespace Vireo {
 			return false;
 		}
 
+		static GLenum VireoFBTextureFormatToGL(FramebufferTextureFormat format)
+		{
+			switch (format)
+			{
+			case FramebufferTextureFormat::RGBA8:       return GL_RGBA8;
+			case FramebufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
+			}
+
+			VIR_CORE_ASSERT(false,"Unsupported Framebuffer Texture Format");
+			return 0;
+		}
+
 	}
+
+	
 
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec)
 		: m_Specification(spec)
@@ -196,6 +210,15 @@ namespace Vireo {
 		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
 		return pixelData;
 
+	}
+
+	void OpenGLFramebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
+	{
+		VIR_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(),"");
+
+		auto& spec = m_ColorAttachmentSpecifications[attachmentIndex];
+		glClearTexImage(m_ColorAttachments[attachmentIndex], 0,
+			Utils::VireoFBTextureFormatToGL(spec.TextureFormat), GL_INT, &value);
 	}
 
 }

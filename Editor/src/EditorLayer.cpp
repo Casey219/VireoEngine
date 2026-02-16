@@ -123,6 +123,7 @@ namespace Vireo {
 
 
 		//Renderer2D::BeginScene(m_CameraController.GetCamera());
+		m_Framebuffer->ClearAttachment(1, -1);
 
 		// Update scene
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
