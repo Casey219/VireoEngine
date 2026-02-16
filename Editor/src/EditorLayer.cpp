@@ -139,7 +139,7 @@ namespace Vireo {
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
 		{
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			VIR_CORE_WARN("Pixel data = {0}", pixelData);
+			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
 		}
 
 		//Renderer2D::EndScene();
@@ -226,6 +226,18 @@ namespace Vireo {
 		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::Begin("Stats");
+
+		std::string name = "None";
+		if (m_HoveredEntity && m_ActiveScene->GetRegistry()->valid((entt::entity)m_HoveredEntity)) // 增加有效性校验
+		//if (m_HoveredEntity) // 增加有效性校验
+		{
+			// 确保实体确实拥有 TagComponent 
+			if (m_HoveredEntity.HasComponent<TagComponent>())
+			{
+				name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
+			}
+		}
+		ImGui::Text("Hovered Entity: %s", name.c_str());
 
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
