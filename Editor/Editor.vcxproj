@@ -136,12 +136,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="src\EditorLayer.h" />
     <ClInclude Include="src\ExampleLayer.h" />
     <ClInclude Include="src\Sandbox2D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="src\EditorApplication.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />

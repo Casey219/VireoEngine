@@ -5,6 +5,7 @@
 #include "../Panels/SceneHierarchyPanel.h"
 #include <Events/KeyEvent.h>
 #include "Camera/EditorCamera.h"
+#include "../Panels/ContentBrowserPanel.h"
 
 namespace Vireo {
 
@@ -56,6 +57,7 @@ namespace Vireo {
 		int m_GizmoType = -1;
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 
 }

@@ -21,6 +21,7 @@
     <ClInclude Include="src\Sandbox2D.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="Panels\ContentBrowserPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Panels\SceneHierarchyPanel.cpp">
@@ -38,5 +39,6 @@
     <ClCompile Include="src\Sandbox2D.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="Panels\ContentBrowserPanel.cpp" />
   </ItemGroup>
 </Project>
