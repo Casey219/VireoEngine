@@ -8,8 +8,9 @@
 namespace Vireo {
 	class EditorApplication :public Application {
 	public:
-		EditorApplication() 
-			: Application("VireoEditor") {
+		EditorApplication(ApplicationCommandLineArgs args) 
+			: Application("VireoEditor", args) 
+		{
 			PushLayer(new EditorLayer());
 		}
 		~EditorApplication() {
@@ -19,8 +20,8 @@ namespace Vireo {
 	};
 
 
-	Application* CreateApplication() {
-		return new EditorApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs args) {
+		return new EditorApplication(args);
 	}
 
 }

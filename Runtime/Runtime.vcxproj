@@ -77,10 +77,10 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;..\ThirdParty\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;..\ThirdParty\ImGuizmo;D:\Developer\Library\VulkanSDK\1.3.296.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
@@ -90,7 +90,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\shaderc_sharedd.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\spirv-cross-cored.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\spirv-cross-glsld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,13 +99,13 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;..\ThirdParty\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;..\ThirdParty\ImGuizmo;D:\Developer\Library\VulkanSDK\1.3.296.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
@@ -116,7 +116,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\shaderc_shared.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\spirv-cross-core.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -125,13 +125,13 @@
       <PrecompiledHeaderFile>virpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>VIR_PLATFORM_WINDOWS;VIR_BUILD_DLL;VIR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;..\ThirdParty\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\ThirdParty\spdlog\include;..\ThirdParty\GLFW\include;..\ThirdParty\GLAD\include;..\ThirdParty\imgui;..\ThirdParty\glm;..\ThirdParty\stb_image;..\ThirdParty\entt\include;..\ThirdParty\yaml-cpp\include;..\ThirdParty\ImGuizmo;D:\Developer\Library\VulkanSDK\1.3.296.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
@@ -142,7 +142,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\shaderc_shared.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\spirv-cross-core.lib;D:\Developer\Library\VulkanSDK\1.3.296.0\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -162,6 +162,7 @@
     <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Core\MouseCodes.h" />
     <ClInclude Include="src\Core\PlatformDetection.h" />
+    <ClInclude Include="src\Core\Timer.h" />
     <ClInclude Include="src\Core\Timestep.h" />
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\Debug\Instrumentor.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLUniformBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Renderer\Buffer.h" />
@@ -188,6 +190,7 @@
     <ClInclude Include="src\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Texture.h" />
+    <ClInclude Include="src\Renderer\UniformBuffer.h" />
     <ClInclude Include="src\Renderer\VertexArray.h" />
     <ClInclude Include="src\Scene\Components.h" />
     <ClInclude Include="src\Scene\Entity.h" />
@@ -220,6 +223,7 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLUniformBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
@@ -233,6 +237,7 @@
     <ClCompile Include="src\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Renderer\UniformBuffer.cpp" />
     <ClCompile Include="src\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />

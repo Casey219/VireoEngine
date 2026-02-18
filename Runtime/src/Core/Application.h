@@ -8,11 +8,22 @@
 #include <ImGui/ImGuiLayer.h>
 
 namespace Vireo {
+	struct ApplicationCommandLineArgs
+	{
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int index) const
+		{
+			VIR_CORE_ASSERT(index < Count);
+			return Args[index];
+		}
+	};
+
 	class  Application
 	{
 	public:
-		Application();
-		Application(const std::string& name = "Vireo App");
+		Application(const std::string& name = "Vireo App", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
 
 		inline Window& GetWindow() { return *m_Window; }
@@ -23,6 +34,7 @@ namespace Vireo {
 
 		inline static Application& Get() { return *s_Instance; }
 
+		ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 		void Run();
 
 		void OnEvent(Event& e);
@@ -32,6 +44,7 @@ namespace Vireo {
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
+		ApplicationCommandLineArgs m_CommandLineArgs;
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
@@ -44,7 +57,8 @@ namespace Vireo {
 	};
 
 	//to be defined in client
-	Application* CreateApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs args);
+
 
 
 }

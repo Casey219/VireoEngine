@@ -15,7 +15,8 @@ namespace Vireo {
 	Application* Application::s_Instance = nullptr;
 
 	
-	Application::Application(const std::string& name)
+	Application::Application(const std::string& name, ApplicationCommandLineArgs args)
+		: m_CommandLineArgs(args)
 	{
 		VIR_PROFILE_FUNCTION();
 
