@@ -26,6 +26,7 @@ IncludeDir["ImGuizmo"] = "ThirdParty/ImGuizmo"
 IncludeDir["shaderc"] = "ThirdParty/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "ThirdParty/SPIRV-Cross"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
+IncludeDir["Box2D"] = "ThirdParty/Box2D/include"
 
 LibraryDir = {}
 
@@ -49,6 +50,7 @@ group "ThirdParty"
 	include "ThirdParty/GLAD"
 	include "ThirdParty/imgui"
 	include "ThirdParty/yaml-cpp"
+	include "ThirdParty/Box2D"
 group ""
 
 
@@ -86,6 +88,7 @@ project "Runtime"
 	{
 		"%{prj.name}/src",
 		"ThirdParty/spdlog/include",
+		"%{IncludeDir.Box2D}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.imgui}",
@@ -98,6 +101,7 @@ project "Runtime"
 	}
 	links
 	{
+		"Box2D",
 		"GLFW",
 		"GLAD",
 		"ImGui",

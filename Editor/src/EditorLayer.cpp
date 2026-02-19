@@ -47,7 +47,7 @@ namespace Vireo {
 		}
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-#if 1
+#if 0
 		// Entity
 		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
 		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
@@ -525,11 +525,12 @@ namespace Vireo {
 	void EditorLayer::OnScenePlay()
 	{
 		m_SceneState = SceneState::Play;
+		m_ActiveScene->OnRuntimeStart();
 	}
 
 	void EditorLayer::OnSceneStop()
 	{
 		m_SceneState = SceneState::Edit;
-
+		m_ActiveScene->OnRuntimeStop();
 	}
 }

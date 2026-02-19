@@ -99,6 +99,9 @@
     <ClInclude Include="src\Core\PlatformDetection.h">
       <Filter>src\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Timer.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core\Timestep.h">
       <Filter>src\Core</Filter>
     </ClInclude>
@@ -144,6 +147,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLUniformBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
@@ -177,6 +183,9 @@
     <ClInclude Include="src\Renderer\Texture.h">
       <Filter>src\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Renderer\UniformBuffer.h">
+      <Filter>src\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Renderer\VertexArray.h">
       <Filter>src\Renderer</Filter>
     </ClInclude>
@@ -207,9 +216,6 @@
     <ClInclude Include="src\virpch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\UniformBuffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLUniformBuffer.h" />
-    <ClInclude Include="src\Core\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ThirdParty\ImGuizmo\ImGuizmo.cpp">
@@ -266,6 +272,9 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLUniformBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -305,6 +314,9 @@
     <ClCompile Include="src\Renderer\Texture.cpp">
       <Filter>src\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\UniformBuffer.cpp">
+      <Filter>src\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Renderer\VertexArray.cpp">
       <Filter>src\Renderer</Filter>
     </ClCompile>
@@ -323,7 +335,5 @@
     <ClCompile Include="src\virpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\UniformBuffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLUniformBuffer.cpp" />
   </ItemGroup>
 </Project>
