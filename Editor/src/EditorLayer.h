@@ -28,6 +28,7 @@ namespace Vireo {
 
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
 	private:
 		Vireo::OrthographicCameraController m_CameraController;
