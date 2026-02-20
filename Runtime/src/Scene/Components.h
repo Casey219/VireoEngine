@@ -1,15 +1,24 @@
 #pragma once
+#include "Core/UUID.h"
+#include "SceneCamera.h"
+//#include "ScriptableEntity.h"
+#include "Renderer/Texture.h"
 
 #include<glm/glm.hpp>
-#include "SceneCamera.h"
-#include "ScriptableEntity.h"
 #include"glm/gtc/matrix_transform.hpp"
-#include "Renderer/Texture.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+
 namespace Vireo {
 	
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+	};
 
 	//add components name
 	struct TagComponent
@@ -73,6 +82,9 @@ namespace Vireo {
 		CameraComponent(const CameraComponent&) = default;
 		
 	};
+
+	// Forward declaration
+	class ScriptableEntity;
 
 	struct NativeScriptComponent
 	{
