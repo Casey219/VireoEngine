@@ -18,6 +18,8 @@ namespace Vireo
 		Scene();
 		~Scene();
 
+		static Ref<Scene> Copy(Ref<Scene> other);
+
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 
@@ -30,6 +32,9 @@ namespace Vireo
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 		auto GetRegistry() { return &m_Registry; }
+
+		void DuplicateEntity(Entity entity);
+
 		Entity GetPrimaryCameraEntity();
 	private:
 		template<typename T>
