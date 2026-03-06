@@ -27,10 +27,12 @@ IncludeDir["shaderc"] = "ThirdParty/shaderc/include"
 IncludeDir["SPIRV_Cross"] = "ThirdParty/SPIRV-Cross"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
 IncludeDir["Box2D"] = "ThirdParty/Box2D/include"
-
+IncludeDir["assimp"] = "ThirdParty/assimp/include"
 LibraryDir = {}
 
 LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
+
+LibraryDir["assimp"]="../ThirdParty/assimp/lib/windows"
 
 Library = {}
 Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
@@ -44,6 +46,10 @@ Library["SPIRV_Tools_Debug"] = "%{LibraryDir.VulkanSDK}/SPIRV-Toolsd.lib"
 Library["ShaderC_Release"] = "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
 Library["SPIRV_Cross_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
 Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
+
+Library["Assimp_Debug"] = "%{LibraryDir.assimp}/assimp-vc143-mtd.lib" 
+Library["Assimp_Release"] = "%{LibraryDir.assimp}/assimp-vc143-mt.lib"
+
 
 group "ThirdParty"
 	include "ThirdParty/GLFW"
@@ -97,14 +103,15 @@ project "Runtime"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.VulkanSDK}"
+		"%{IncludeDir.VulkanSDK}",
+		"%{IncludeDir.assimp}"
 	}
 	links
 	{
 		"Box2D",
 		"GLFW",
 		"GLAD",
-		"ImGui",
+		"ImGui", 
 		"opengl32.lib",
 		"yaml-cpp"
 	}
@@ -129,7 +136,8 @@ project "Runtime"
 		{
 			"%{Library.ShaderC_Debug}",
 			"%{Library.SPIRV_Cross_Debug}",
-			"%{Library.SPIRV_Cross_GLSL_Debug}"
+			"%{Library.SPIRV_Cross_GLSL_Debug}",
+			"%{Library.Assimp_Debug}"
 		}
 
 	filter "configurations:Release"
@@ -140,7 +148,8 @@ project "Runtime"
 		{
 			"%{Library.ShaderC_Release}",
 			"%{Library.SPIRV_Cross_Release}",
-			"%{Library.SPIRV_Cross_GLSL_Release}"
+			"%{Library.SPIRV_Cross_GLSL_Release}",
+			"%{Library.Assimp_Release}"
 		}
 
 	filter "configurations:Dist"
@@ -151,7 +160,8 @@ project "Runtime"
 		{
 			"%{Library.ShaderC_Release}",
 			"%{Library.SPIRV_Cross_Release}",
-			"%{Library.SPIRV_Cross_GLSL_Release}"
+			"%{Library.SPIRV_Cross_GLSL_Release}",
+			"%{Library.Assimp_Release}"
 		}
     
     filter "action:vs*" --add utf-8 for spdlog
@@ -181,7 +191,8 @@ project "Editor"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.assimp}"
 	}
 
 	links
@@ -202,18 +213,27 @@ project "Editor"
 		--buildoptions {"/MDd"}
 		runtime "Debug"
 		symbols "On"
+		-- postbuildcommands {
+        --     '{COPY} "%{LibraryDir.assimp}/assimp-vc143-mtd.dll" "%{targetdir}"'
+        -- }
 
 	filter "configurations:Release"
 		defines "VIR_RELEASE"
 		--buildoptions {"/MD"}
 		runtime "Release"
 		optimize "On"
+		-- postbuildcommands {
+        --     '{COPY} "%{LibraryDir.assimp}/assimp-vc143-mt.dll" "%{targetdir}"'
+        -- }
 
 	filter "configurations:Dist"
 		defines "VIR_DIST"
 		--buildoptions {"/MD"}
 		runtime "Release"
 		optimize "On"
+		-- postbuildcommands {
+        --     '{COPY} "%{LibraryDir.assimp}/assimp-vc143-mt.dll" "%{targetdir}"'
+        -- }
 
     filter "action:vs*"
         buildoptions { "/utf-8" } --add utf-8 for spdlog

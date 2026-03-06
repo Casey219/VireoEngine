@@ -13,6 +13,10 @@
 #include <ImGuizmo.h>
 #include "Math/Math.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 namespace Vireo {
 
 	extern const std::filesystem::path g_AssetPath;
@@ -24,6 +28,15 @@ namespace Vireo {
 
 	void EditorLayer::OnAttach()
 	{
+		//test assimp
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile("assets/models/Cerberus_Gun/Cerberus_LP.FBX",
+			aiProcess_Triangulate | aiProcess_GenNormals);
+
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+			VIR_ERROR("ERROR::ASSIMP::{}", importer.GetErrorString());
+
+		}
 		VIR_PROFILE_FUNCTION();
 
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
