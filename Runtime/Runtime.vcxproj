@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="..\ThirdParty\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="..\ThirdParty\stb_image\stb_image.h" />
+    <ClInclude Include="src\Animation\AnimationData.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\EditorCamera.h" />
     <ClInclude Include="src\Camera\OrthographicCamera.h" />
@@ -172,7 +173,10 @@
     <ClInclude Include="src\Events\KeyEvent.h" />
     <ClInclude Include="src\Events\MouseEvent.h" />
     <ClInclude Include="src\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Model\Material.h" />
     <ClInclude Include="src\Math\Math.h" />
+    <ClInclude Include="src\Model\Mesh.h" />
+    <ClInclude Include="src\Model\Model.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
@@ -189,6 +193,7 @@
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Renderer\RenderPass\RenderPassType.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Texture.h" />
     <ClInclude Include="src\Renderer\UniformBuffer.h" />
@@ -199,6 +204,7 @@
     <ClInclude Include="src\Scene\SceneCamera.h" />
     <ClInclude Include="src\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Utils\AssetManager.h" />
     <ClInclude Include="src\Utils\PlatformUtils.h" />
     <ClInclude Include="src\Vireo.h" />
     <ClInclude Include="src\virpch.h" />
@@ -218,7 +224,10 @@
     <ClCompile Include="src\Core\UUID.cpp" />
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Model\Material.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
+    <ClCompile Include="src\Model\Mesh.cpp" />
+    <ClCompile Include="src\Model\Model.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />

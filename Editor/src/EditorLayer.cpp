@@ -16,6 +16,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include<assimp/version.h>
 
 namespace Vireo {
 
@@ -29,6 +30,8 @@ namespace Vireo {
 	void EditorLayer::OnAttach()
 	{
 		//test assimp
+		VIR_INFO("assimp version:{}.{}", aiGetVersionMajor(), aiGetVersionMinor());
+		//auto s=aiGetVersionMajor();
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile("assets/models/Cerberus_Gun/Cerberus_LP.FBX",
 			aiProcess_Triangulate | aiProcess_GenNormals);

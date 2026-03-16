@@ -1,0 +1,10 @@
+# 所有文本文件强制使用 LF
+* text=auto eol=lf
+
+# 确保某些特定二进制文件不被当作文本处理
+*.png binary
+*.jpg binary
+*.exe binary
+*.dll binary
+*.lib binary
+*.pdb binary
