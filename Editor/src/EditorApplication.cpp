@@ -4,6 +4,7 @@
 #include "Sandbox2D.h"
 #include "ExampleLayer.h"
 #include "EditorLayer.h"
+#include "Render3DLayer.h"
 
 namespace Vireo {
 	class EditorApplication :public Application {
@@ -11,7 +12,8 @@ namespace Vireo {
 		EditorApplication(ApplicationCommandLineArgs args) 
 			: Application("VireoEditor", args) 
 		{
-			PushLayer(new EditorLayer());
+			//PushLayer(new EditorLayer());
+			PushLayer(new Render3DLayer());
 		}
 		~EditorApplication() {
 

@@ -29,17 +29,17 @@ namespace Vireo {
 
 	void EditorLayer::OnAttach()
 	{
-		//test assimp
-		VIR_INFO("assimp version:{}.{}", aiGetVersionMajor(), aiGetVersionMinor());
-		//auto s=aiGetVersionMajor();
-		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile("assets/models/Cerberus_Gun/Cerberus_LP.FBX",
-			aiProcess_Triangulate | aiProcess_GenNormals);
+		////test assimp
+		//VIR_INFO("assimp version:{}.{}", aiGetVersionMajor(), aiGetVersionMinor());
+		//Assimp::Importer importer;
+		//const aiScene* scene = importer.ReadFile("assets/models/Cerberus_Gun/Cerberus_LP.FBX",
+		//	aiProcess_Triangulate | aiProcess_GenNormals);
 
-		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-			VIR_ERROR("ERROR::ASSIMP::{}", importer.GetErrorString());
+		//if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+		//	VIR_ERROR("ERROR::ASSIMP::{}", importer.GetErrorString());
 
-		}
+		//}
+
 		VIR_PROFILE_FUNCTION();
 
 		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");

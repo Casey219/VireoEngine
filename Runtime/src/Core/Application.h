@@ -6,6 +6,7 @@
 #include<Events/ApplicationEvent.h>
 #include"LayerStack.h"
 #include <ImGui/ImGuiLayer.h>
+#include"Logger.h"
 
 namespace Vireo {
 	struct ApplicationCommandLineArgs
@@ -15,7 +16,7 @@ namespace Vireo {
 
 		const char* operator[](int index) const
 		{
-			VIR_CORE_ASSERT(index < Count);
+			VIR_CORE_ASSERT(index < Count,"index<Count");
 			return Args[index];
 		}
 	};

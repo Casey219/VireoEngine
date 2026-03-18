@@ -139,7 +139,7 @@ namespace Vireo {
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
 
-		VIR_CORE_ASSERT(entity.HasComponent<IDComponent>());
+		VIR_CORE_ASSERT(entity.HasComponent<IDComponent>(),"Serialize Entity Failed");
 		out << YAML::BeginMap; // Entity
 		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
 

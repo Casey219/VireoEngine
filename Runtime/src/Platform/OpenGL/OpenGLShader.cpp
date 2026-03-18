@@ -12,6 +12,8 @@
 
 #include "Core/Timer.h"
 
+
+
 namespace Vireo {
 
 	namespace Utils {
@@ -34,7 +36,7 @@ namespace Vireo {
 			case GL_VERTEX_SHADER:   return shaderc_glsl_vertex_shader;
 			case GL_FRAGMENT_SHADER: return shaderc_glsl_fragment_shader;
 			}
-			VIR_CORE_ASSERT(false);
+			VIR_CORE_ASSERT(false, "Unknown shader type!");
 			return (shaderc_shader_kind)0;
 		}
 
@@ -45,7 +47,7 @@ namespace Vireo {
 			case GL_VERTEX_SHADER:   return "GL_VERTEX_SHADER";
 			case GL_FRAGMENT_SHADER: return "GL_FRAGMENT_SHADER";
 			}
-			VIR_CORE_ASSERT(false);
+			VIR_CORE_ASSERT(false,"GLShaderStageToString failed!");
 			return nullptr;
 		}
 
@@ -69,7 +71,7 @@ namespace Vireo {
 			case GL_VERTEX_SHADER:    return ".cached_opengl.vert";
 			case GL_FRAGMENT_SHADER:  return ".cached_opengl.frag";
 			}
-			VIR_CORE_ASSERT(false);
+			VIR_CORE_ASSERT(false,"GLShaderStageCachedOpenGLFileExtension failed");
 			return "";
 		}
 
@@ -80,7 +82,7 @@ namespace Vireo {
 			case GL_VERTEX_SHADER:    return ".cached_vulkan.vert";
 			case GL_FRAGMENT_SHADER:  return ".cached_vulkan.frag";
 			}
-			VIR_CORE_ASSERT(false);
+			VIR_CORE_ASSERT(false,"GLShaderStageCachedVulkanFileExtension failed");
 			return "";
 		}
 
@@ -211,7 +213,24 @@ namespace Vireo {
 			std::filesystem::path cachedPath = cacheDirectory / (shaderFilePath.filename().string() + Utils::GLShaderStageCachedVulkanFileExtension(stage));
 
 			std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
+			bool shouldCompile = true;
+
+			// 2. 检查是否可以使用缓存
 			if (in.is_open())
+			{
+#ifdef VIR_DEBUG
+				// Debug 模式下：检查时间戳
+				auto shaderLastWriteTime = std::filesystem::last_write_time(shaderFilePath);
+				auto cacheLastWriteTime = std::filesystem::last_write_time(cachedPath);
+
+				if (cacheLastWriteTime > shaderLastWriteTime)
+					shouldCompile = false;
+#else
+				// Release/Dist 模式下：只要有缓存就直接用，追求启动速度
+				shouldCompile = false;
+#endif
+			}
+			if (!shouldCompile)
 			{
 				in.seekg(0, std::ios::end);
 				auto size = in.tellg();
@@ -227,7 +246,7 @@ namespace Vireo {
 				if (module.GetCompilationStatus() != shaderc_compilation_status_success)
 				{
 					VIR_CORE_ERROR(module.GetErrorMessage());
-					VIR_CORE_ASSERT(false);
+					VIR_CORE_ASSERT(false, module.GetErrorMessage());
 				}
 
 				shaderData[stage] = std::vector<uint32_t>(module.cbegin(), module.cend());
@@ -268,7 +287,24 @@ namespace Vireo {
 			std::filesystem::path cachedPath = cacheDirectory / (shaderFilePath.filename().string() + Utils::GLShaderStageCachedOpenGLFileExtension(stage));
 
 			std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
+			bool shouldCompile = true;
+
+			// 2. 检查是否可以使用缓存
 			if (in.is_open())
+			{
+#ifdef VIR_DEBUG
+				// Debug 模式下：检查时间戳
+				auto shaderLastWriteTime = std::filesystem::last_write_time(shaderFilePath);
+				auto cacheLastWriteTime = std::filesystem::last_write_time(cachedPath);
+
+				if (cacheLastWriteTime > shaderLastWriteTime)
+					shouldCompile = false;
+#else
+				// Release/Dist 模式下：只要有缓存就直接用，追求启动速度
+				shouldCompile = false;
+#endif
+			}
+			if (!shouldCompile)
 			{
 				in.seekg(0, std::ios::end);
 				auto size = in.tellg();
@@ -288,7 +324,7 @@ namespace Vireo {
 				if (module.GetCompilationStatus() != shaderc_compilation_status_success)
 				{
 					VIR_CORE_ERROR(module.GetErrorMessage());
-					VIR_CORE_ASSERT(false);
+					VIR_CORE_ASSERT(false, module.GetErrorMessage());
 				}
 
 				shaderData[stage] = std::vector<uint32_t>(module.cbegin(), module.cend());
@@ -348,26 +384,36 @@ namespace Vireo {
 
 	void OpenGLShader::Reflect(GLenum stage, const std::vector<uint32_t>& shaderData)
 	{
-		spirv_cross::Compiler compiler(shaderData);
-		spirv_cross::ShaderResources resources = compiler.get_shader_resources();
+		//spirv_cross::Compiler compiler(shaderData);
+		try {
+			spirv_cross::Compiler compiler(shaderData);
+			spirv_cross::ShaderResources resources = compiler.get_shader_resources();
+			VIR_CORE_TRACE("OpenGLShader::Reflect - {0} {1}", Utils::GLShaderStageToString(stage), m_FilePath);
+			VIR_CORE_TRACE("    {0} uniform buffers", resources.uniform_buffers.size());
+			VIR_CORE_TRACE("    {0} resources", resources.sampled_images.size());
 
-		VIR_CORE_TRACE("OpenGLShader::Reflect - {0} {1}", Utils::GLShaderStageToString(stage), m_FilePath);
-		VIR_CORE_TRACE("    {0} uniform buffers", resources.uniform_buffers.size());
-		VIR_CORE_TRACE("    {0} resources", resources.sampled_images.size());
+			VIR_CORE_TRACE("Uniform buffers:");
+			for (const auto& resource : resources.uniform_buffers)
+			{
+				const auto& bufferType = compiler.get_type(resource.base_type_id);
+				uint32_t bufferSize = compiler.get_declared_struct_size(bufferType);
+				uint32_t binding = compiler.get_decoration(resource.id, spv::DecorationBinding);
+				int memberCount = bufferType.member_types.size();
 
-		VIR_CORE_TRACE("Uniform buffers:");
-		for (const auto& resource : resources.uniform_buffers)
-		{
-			const auto& bufferType = compiler.get_type(resource.base_type_id);
-			uint32_t bufferSize = compiler.get_declared_struct_size(bufferType);
-			uint32_t binding = compiler.get_decoration(resource.id, spv::DecorationBinding);
-			int memberCount = bufferType.member_types.size();
-
-			VIR_CORE_TRACE("  {0}", resource.name);
-			VIR_CORE_TRACE("    Size = {0}", bufferSize);
-			VIR_CORE_TRACE("    Binding = {0}", binding);
-			VIR_CORE_TRACE("    Members = {0}", memberCount);
+				VIR_CORE_TRACE("  {0}", resource.name);
+				VIR_CORE_TRACE("    Size = {0}", bufferSize);
+				VIR_CORE_TRACE("    Binding = {0}", binding);
+				VIR_CORE_TRACE("    Members = {0}", memberCount);
+			}
+			// ... 其他逻辑
 		}
+		catch (const spirv_cross::CompilerError& e) {
+			// 打印出具体的错误原因，比如 "SPIR-V magic number is invalid"
+			printf("SPIRV-Cross Error: %s\n", e.what());
+		}
+		
+
+		
 	}
 
 	void OpenGLShader::Bind() const

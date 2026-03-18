@@ -41,7 +41,7 @@ namespace Vireo {
 		for (auto e : view)
 		{
 			UUID uuid = src.get<IDComponent>(e).ID;
-			VIR_CORE_ASSERT(enttMap.find(uuid) != enttMap.end());
+			VIR_CORE_ASSERT(enttMap.find(uuid) != enttMap.end(),"Copy Component failed:can't find uuid");
 			entt::entity dstEnttID = enttMap.at(uuid);
 
 			auto& component = src.get<Component>(e);

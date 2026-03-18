@@ -30,7 +30,7 @@ namespace Vireo {
 
 	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
-		VIR_CORE_ASSERT(width > 0 && height > 0);
+		VIR_CORE_ASSERT(width > 0 && height > 0,"Viewport Size Error!");
 		m_AspectRatio = (float)width / (float)height;
 		RecalculateProjection();
 	}
