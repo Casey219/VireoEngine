@@ -1,4 +1,5 @@
 #include"Render3DLayer.h"
+#include "Renderer/Renderer3D.h"
 
 namespace Vireo {
 	Render3DLayer::Render3DLayer()
@@ -14,50 +15,10 @@ namespace Vireo {
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
-		struct Vertex {
-			glm::vec3 Position;
-			glm::vec3 Color;
-		};
 
-		float positions[] = {
-			// Back face
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, // 0: Black
-			 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, // 1: Red
-			 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, // 2: Yellow
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // 3: Green
-			// Front face
-			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, // 4: Blue
-			 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, // 5: Magenta
-			 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f, // 6: White
-			-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f  // 7: Cyan
-		};
-
-		unsigned int indices[] = {
-			// Back face
-			0, 1, 2,  2, 3, 0,
-			// Front face
-			4, 6, 5,  5, 6, 7,
-			// Left face
-			0, 3, 7,  7, 4, 0,
-			// Right face
-			1, 5, 6,  6, 2, 1,
-			// Top face
-			3, 2, 6,  6, 7, 3,
-			// Bottom face
-			0, 4, 5,  5, 1, 0
-		};
-		m_CubeIndexCount = sizeof(indices) / sizeof(unsigned int);
-		m_CubeVA = VertexArray::Create();
-		 Ref<VertexBuffer> cubeVB = VertexBuffer::Create(positions, sizeof(positions));
-		 cubeVB->SetLayout({
-			 { ShaderDataType::Float3, "a_Position" },
-			 { ShaderDataType::Float3, "a_Color" }
-			 });
-		 m_CubeVA->AddVertexBuffer(cubeVB);
-		 Ref<IndexBuffer> cubeIB = IndexBuffer::Create(indices, m_CubeIndexCount);
-		 m_CubeVA->SetIndexBuffer(cubeIB);
-		 m_CubeShader = Shader::Create("assets/shaders/Cube.glsl");
-		 m_UniformBuffer=UniformBuffer::Create(sizeof(MVPMatrix), 0);
+		Renderer3D::Init();
+		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
+		
 	}
 	void Render3DLayer::OnDetach()
 	{
@@ -67,24 +28,35 @@ namespace Vireo {
 	{
 		
 		m_EditorCamera.OnUpdate(ts);
-		//m_Framebuffer->Bind();
+
+		// 准备渲染环境
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
 
-		// 2. 开启深度测试
+		// 开启深度测试
 		RenderCommand::EnableDepthTest();
 
-		// 3. 开始 3D 场景 
-		m_CubeShader->Bind();
+		// 开始 3D 场景渲染（上传 Camera Uniform Buffer）
+		Renderer3D::BeginScene(m_EditorCamera);
 
-		// 设置 Uniforms
-		m_MVPMatrix.u_Transform=glm::mat4(1.0f);
-		m_MVPMatrix.u_ViewProjection=m_EditorCamera.GetViewProjection();
-		m_UniformBuffer->SetData(&m_MVPMatrix, sizeof(MVPMatrix));
+		// 提交绘制请求
+		// 绘制一个带纹理的平铺地面
+		glm::mat4 floorTransform = glm::translate(glm::mat4(1.0f), { 0.0f, -1.0f, 0.0f })
+			* glm::scale(glm::mat4(1.0f), { 10.0f, 0.1f, 10.0f });
+		Renderer3D::DrawCube(floorTransform,m_Texture,5.0f,{ 0.8f, 0.8f, 0.8f, 1.0f });
 
-		// 4. 绘制
-		m_CubeVA->Bind();
-		RenderCommand::DrawIndexed(m_CubeVA,m_CubeIndexCount);
+		// 绘制一个红色的旋转立方体
+		static float rotation = 0.0f;
+		rotation += ts * 50.0f;
+		glm::mat4 cubeTransform = glm::translate(glm::mat4(1.0f), { 0.0f, 0.5f, 0.0f })
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 1.0f, 1.0f })
+			* glm::scale(glm::mat4(1.0f), { 1.5f, 1.5f, 1.5f });
+
+		//
+		Renderer3D::DrawCube(cubeTransform,nullptr,1.0f,{ 1.0f, 0.3f, 0.3f, 1.0f });
+
+		// 结束场景
+		Renderer3D::EndScene();
 		
 
 	}

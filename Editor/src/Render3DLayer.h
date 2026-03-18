@@ -29,6 +29,7 @@ namespace Vireo {
 		MVPMatrix m_MVPMatrix;
 
 		Ref<UniformBuffer> m_UniformBuffer;
+		Ref<Texture2D> m_Texture;
 	
 	};
 }
