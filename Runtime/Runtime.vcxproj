@@ -256,6 +256,7 @@
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Scene\SceneSerializer.cpp" />
+    <ClCompile Include="src\Utils\AssetManager.cpp" />
     <ClCompile Include="src\virpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

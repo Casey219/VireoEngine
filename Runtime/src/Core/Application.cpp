@@ -9,7 +9,7 @@
 #include "Renderer/Renderer.h"
 #include <GLFW/glfw3.h>
 
-
+#include "Utils/AssetManager.h"
 
 namespace Vireo {
 	Application* Application::s_Instance = nullptr;
@@ -27,6 +27,7 @@ namespace Vireo {
 		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(VIR_BIND_EVENT_FN(Application::OnEvent));
 
+		AssetManager::Init();
 		Renderer::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();

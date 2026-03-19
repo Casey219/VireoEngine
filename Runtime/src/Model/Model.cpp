@@ -2,28 +2,29 @@
 #include "Model.h"
 #include<assimp/Importer.hpp>
 #include <assimp/postprocess.h>
+#include <Utils/AssetManager.h>
 namespace Vireo {
-	void Model::LoadModel(const std::string& path, const Ref<Shader>& shader) {
+	void Model::LoadModel(const std::string& path) {
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) return;
 		m_Directory = path.substr(0, path.find_last_of('/'));
 
-		ProcessNode(scene->mRootNode, scene, shader);
+		ProcessNode(scene->mRootNode, scene);
 	}
 
-	void Model::ProcessNode(aiNode* node, const aiScene* scene, const Ref<Shader>& shader) {
+	void Model::ProcessNode(aiNode* node, const aiScene* scene) {
 		for (uint32_t i = 0; i < node->mNumMeshes; i++) {
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			m_Submeshes.push_back(ProcessMesh(mesh, scene, shader));
+			m_Submeshes.push_back(ProcessMesh(mesh, scene));
 		}
 		for (uint32_t i = 0; i < node->mNumChildren; i++) {
-			ProcessNode(node->mChildren[i], scene, shader);
+			ProcessNode(node->mChildren[i], scene);
 		}
 	}
 
-	Model::Submesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene, const Ref<Shader>& shader) {
+	Model::Submesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
 		// 1. 提取顶点数据
 		std::vector<MeshVertex> vertices;
 		for (uint32_t i = 0; i < mesh->mNumVertices; i++) {
@@ -46,14 +47,15 @@ namespace Vireo {
 		}
 
 		// 3. 处理材质联系 
-		Ref<Material> material = std::make_shared<Material>(shader);
+		Ref<Material> material = std::make_shared<Material>(m_Shader);
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial* aiMat = scene->mMaterials[mesh->mMaterialIndex];
 			aiString str;
 			if (aiMat->GetTexture(aiTextureType_DIFFUSE, 0, &str) == AI_SUCCESS|| aiMat->GetTexture(aiTextureType_BASE_COLOR, 0, &str) == AI_SUCCESS) {
 				std::string texPath = m_Directory + "/" + str.C_Str();
-				material->SetAlbedo(Texture2D::Create(texPath));
-				VIR_CORE_INFO("Loaded texture: {0}", texPath);
+				/*material->SetAlbedo(Texture2D::Create(texPath));
+				VIR_CORE_INFO("Loaded texture: {0}", texPath);*/
+				material->SetAlbedo(AssetManager::GetTexture(texPath));
 			}
 			else {
 				VIR_CORE_WARN("Mesh has material but no diffuse texture found!");

@@ -7,7 +7,15 @@
 namespace Vireo {
 	class Material {
 	public:
-		Material(const Ref<Shader>& shader) : m_Shader(shader) {}
+		Material(const Ref<Shader>& shader) {
+			if(shader)
+				m_Shader = shader;
+			else {
+				VIR_CORE_ERROR("Material created with default shader!");
+				m_Shader = Shader::Create("assets/shaders/DefaultMesh.glsl");
+			}
+				
+		}
 
 		void Bind() {
 			m_Shader->Bind();

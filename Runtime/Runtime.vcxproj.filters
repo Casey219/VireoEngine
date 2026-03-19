@@ -352,5 +352,6 @@
     <ClCompile Include="src\Model\Material.cpp" />
     <ClCompile Include="src\Model\Model.cpp" />
     <ClCompile Include="src\Renderer\Renderer3D.cpp" />
+    <ClCompile Include="src\Utils\AssetManager.cpp" />
   </ItemGroup>
 </Project>

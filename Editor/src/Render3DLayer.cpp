@@ -1,6 +1,6 @@
 #include"Render3DLayer.h"
 #include "Renderer/Renderer3D.h"
-
+#include "Utils/AssetManager.h"
 
 namespace Vireo {
 	Render3DLayer::Render3DLayer()
@@ -21,13 +21,14 @@ namespace Vireo {
 		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
 
 		
-		auto meshShader = Shader::Create("assets/shaders/Mesh.glsl");
+		auto meshShader = Shader::Create("assets/shaders/DefaultMesh.glsl");
 
 		// 加载模型（Model 类内部会调用 Assimp 并创建多个 Submesh）
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Sphere/globe-sphere.mtl", meshShader);
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX", meshShader);
 		//m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf", meshShader);
-		m_BackpackModel = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj", meshShader);
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj", meshShader);
+		m_BackpackModel = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj",meshShader);
 
 		VIR_CORE_ASSERT(m_BackpackModel->GetSubmeshes().size() > 0, "Failed to load model or model has no submeshes!");
 		
