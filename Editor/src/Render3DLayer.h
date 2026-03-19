@@ -1,6 +1,8 @@
 #pragma once
 #include"Vireo.h"
 #include <Renderer/UniformBuffer.h>
+#include "Model/Model.h"
+
 namespace Vireo {
 	class Render3DLayer : public Layer
 	{
@@ -30,6 +32,8 @@ namespace Vireo {
 
 		Ref<UniformBuffer> m_UniformBuffer;
 		Ref<Texture2D> m_Texture;
+
+		Ref<Model> m_BackpackModel;
 	
 	};
 }

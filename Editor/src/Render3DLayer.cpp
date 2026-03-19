@@ -1,6 +1,7 @@
 #include"Render3DLayer.h"
 #include "Renderer/Renderer3D.h"
 
+
 namespace Vireo {
 	Render3DLayer::Render3DLayer()
 		: Layer("Render3DLayer"), m_EditorCamera(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f)
@@ -18,6 +19,19 @@ namespace Vireo {
 
 		Renderer3D::Init();
 		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
+
+		
+		auto meshShader = Shader::Create("assets/shaders/Mesh.glsl");
+
+		// 加载模型（Model 类内部会调用 Assimp 并创建多个 Submesh）
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Sphere/globe-sphere.mtl", meshShader);
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX", meshShader);
+		//m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf", meshShader);
+		m_BackpackModel = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj", meshShader);
+
+		VIR_CORE_ASSERT(m_BackpackModel->GetSubmeshes().size() > 0, "Failed to load model or model has no submeshes!");
+		
+		VIR_INFO("Model loaded with {0} submeshes", m_BackpackModel->GetSubmeshes().size());
 		
 	}
 	void Render3DLayer::OnDetach()
@@ -39,6 +53,7 @@ namespace Vireo {
 		// 开始 3D 场景渲染（上传 Camera Uniform Buffer）
 		Renderer3D::BeginScene(m_EditorCamera);
 
+		/*
 		// 提交绘制请求
 		// 绘制一个带纹理的平铺地面
 		glm::mat4 floorTransform = glm::translate(glm::mat4(1.0f), { 0.0f, -1.0f, 0.0f })
@@ -54,6 +69,11 @@ namespace Vireo {
 
 		//
 		Renderer3D::DrawCube(cubeTransform,nullptr,1.0f,{ 1.0f, 0.3f, 0.3f, 1.0f });
+		*/
+		for (auto& submesh : m_BackpackModel->GetSubmeshes())
+		{
+			Renderer3D::DrawMesh(submesh.MeshData, submesh.Mat);
+		}
 
 		// 结束场景
 		Renderer3D::EndScene();

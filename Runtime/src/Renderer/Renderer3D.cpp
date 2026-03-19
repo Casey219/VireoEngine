@@ -20,6 +20,12 @@ namespace Vireo {
 		int EntityID;       
 	};
 
+	struct MeshElementData {
+		glm::mat4 Transform;
+		int EntityID;
+		float Padding[3]; // 补齐到 16 字节对齐，确保 std140 布局正确
+	};
+
 	struct Renderer3DData {
 		static const uint32_t MaxCubes = 10000;
 		static const uint32_t MaxVertices = MaxCubes * 24; // 每个立方体 24 个独立顶点
@@ -51,6 +57,9 @@ namespace Vireo {
 		};
 		CameraData CameraBuffer;
 		Ref<UniformBuffer> CameraUniformBuffer;
+
+		Ref<UniformBuffer> MeshUniformBuffer;
+		MeshElementData MeshBuffer;
 	};
 	static Renderer3DData s_Data;
 
@@ -129,11 +138,15 @@ namespace Vireo {
 			{{ 0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {1.0f, 1.0f}},
 			{{-0.5f, -0.5f,  0.5f}, { 0.0f, -1.0f,  0.0f}, {0.0f, 1.0f}}
 		};
+
+
+		s_Data.MeshUniformBuffer = UniformBuffer::Create(sizeof(MeshElementData), 1);
 	}
 
 	void Renderer3D::BeginScene(const EditorCamera& camera) {
 		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
 		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
+
 		StartBatch();
 	}
 
@@ -165,13 +178,34 @@ namespace Vireo {
 		s_Data.CubeIndexCount += 36;
 	}
 
+	// Renderer3D.cpp
+	void Renderer3D::DrawMesh(const Ref<Mesh>& mesh, const Ref<Material>& material, const glm::mat4& transform, int entityID)
+	{
+		s_Data.MeshBuffer.Transform = transform;
+		s_Data.MeshBuffer.EntityID = entityID;
+		s_Data.MeshUniformBuffer->SetData(&s_Data.MeshBuffer, sizeof(MeshElementData));
+
+		// 2. 绑定材质 (激活 Shader 和 纹理)
+		material->Bind();
+
+		// 3. 绑定几何并绘制
+		mesh->GetVertexArray()->Bind();
+		RenderCommand::DrawIndexed(mesh->GetVertexArray(), mesh->GetIndexCount());
+
+		// 4. 清理
+		mesh->GetVertexArray()->Unbind();
+	}
+
 	void Renderer3D::Flush() {
 		if (s_Data.CubeIndexCount == 0) return;
 		uint32_t size = (uint32_t)((uint8_t*)s_Data.CubeVertexBufferPtr - (uint8_t*)s_Data.CubeVertexBufferBase);
+		s_Data.CubeVertexArray->Bind();
 		s_Data.CubeVertexBuffer->SetData(s_Data.CubeVertexBufferBase, size);
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) s_Data.TextureSlots[i]->Bind(i);
 		s_Data.CubeShader->Bind();
 		RenderCommand::DrawIndexed(s_Data.CubeVertexArray, s_Data.CubeIndexCount);
+		//s_Data.CubeShader->Unbind();
+		s_Data.CubeVertexArray->Unbind();
 	}
 
 	void Renderer3D::StartBatch() {

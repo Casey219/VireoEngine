@@ -121,6 +121,8 @@ namespace Vireo {
 		}
 
 		m_VertexBuffers.push_back(vertexBuffer);
+		vertexBuffer->Unbind();
+		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
@@ -131,6 +133,8 @@ namespace Vireo {
 		indexBuffer->Bind();
 
 		m_IndexBuffer = indexBuffer;
+		//indexBuffer->Unbind();
+		glBindVertexArray(0);
 	}
 
 }
