@@ -57,7 +57,7 @@ namespace Vireo {
 		return s_ErrorTexture;
 	}
 
-	Ref<Model> AssetManager::GetModel(const std::string& path,const Ref<Shader>& shader)
+	Ref<Model> AssetManager::GetModel(const std::string& path)
 	{
 		std::string fullPath = NormalizePath(path);
 
@@ -75,7 +75,7 @@ namespace Vireo {
 			return nullptr;
 		}
 
-		Ref<Model> model = CreateRef<Model>(fullPath,shader);
+		Ref<Model> model = CreateRef<Model>(fullPath);
 		s_Models[fullPath] = model;
 		VIR_CORE_TRACE("AssetManager: Loaded model {0}", fullPath);
 		return model;

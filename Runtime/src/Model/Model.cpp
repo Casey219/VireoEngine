@@ -47,7 +47,7 @@ namespace Vireo {
 		}
 
 		// 3. 处理材质联系 
-		Ref<Material> material = std::make_shared<Material>(m_Shader);
+		Ref<Material> material = std::make_shared<Material>();
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial* aiMat = scene->mMaterials[mesh->mMaterialIndex];
 			aiString str;
@@ -64,6 +64,6 @@ namespace Vireo {
 			}
 		}
 
-		return { std::make_shared<Mesh>(vertices, indices), material };
+		return { std::make_shared<Mesh>(vertices, indices), material};
 	}
 }

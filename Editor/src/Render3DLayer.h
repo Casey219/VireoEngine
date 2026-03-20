@@ -34,6 +34,8 @@ namespace Vireo {
 		Ref<Texture2D> m_Texture;
 
 		Ref<Model> m_BackpackModel;
-	
+		Ref<Shader> m_MeshShader;
+
+		Ref<Scene> m_Scene;
 	};
 }

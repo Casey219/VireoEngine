@@ -16,7 +16,7 @@ namespace Vireo {
 
 		static void DrawCube(const glm::mat4& transform, const Ref<Texture2D>& texture,float tilingFactor=1.0,const glm::vec4& color= glm::vec4(1.0f), int entityID=-1);
 		// Renderer3D.h
-		static void DrawMesh(const Ref<Mesh>& mesh, const Ref<Material>& material, const glm::mat4& transform= glm::mat4(1.0f), int entityID = -1);
+		static void DrawMesh(const Ref<Mesh>& mesh, const Ref<Material>& material, const Ref<Shader>& shader, const glm::mat4& transform= glm::mat4(1.0f), int entityID = -1);
 		static void Flush();
 		static void NextBatch();
 		static void StartBatch();

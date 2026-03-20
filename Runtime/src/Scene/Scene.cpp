@@ -10,6 +10,7 @@
 #include "box2d/b2_fixture.h"
 #include "box2d/b2_polygon_shape.h"
 #include "ScriptableEntity.h"
+#include "Renderer/Renderer3D.h"
 
 namespace Vireo {
 
@@ -233,7 +234,16 @@ namespace Vireo {
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
+		auto view = m_Registry.view<MeshRendererComponent, TransformComponent>();
+		for (auto entity : view) {
+			auto[mesh,transform] = view.get<MeshRendererComponent,TransformComponent>(entity);
+			for (auto& submesh : mesh.MeshModel->GetSubmeshes()) {
+				Renderer3D::DrawMesh(submesh.MeshData, submesh.MaterialData,mesh.MeshShader, transform.GetTransform());
+			}
+				
 
+			
+		}
 		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 		for (auto entity : group)
 		{
@@ -334,4 +344,13 @@ namespace Vireo {
 	{
 	}
 
+	template<>
+	void Scene::OnComponentAdded<MeshRendererComponent>(Entity entity, MeshRendererComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<PointLightComponent>(Entity entity, PointLightComponent& component)
+	{
+	}
 }

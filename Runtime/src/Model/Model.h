@@ -11,28 +11,25 @@ namespace Vireo
 {
 	class Model {
 	public:
-		Model(const std::string& path, const Ref<Shader>& shader):m_Shader(shader) {
-			LoadModel(path);
-		}
-		Model(const std::string&path) {
+		Model(const std::string&path):m_Path(path) {
 			LoadModel(path);
 		}
 
 		struct Submesh {
 			Ref<Mesh> MeshData;
-			Ref<Material> Mat;
+			Ref<Material> MaterialData;
 		};
 
 		const std::vector<Submesh>& GetSubmeshes() const { return m_Submeshes; }
+		std::string GetPath() const { return m_Path; }
 
 	private:
 		void LoadModel(const std::string& path);
 		void ProcessNode(aiNode* node, const aiScene* scene);
 		Submesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-		void setShader(const Ref<Shader>& shader) { m_Shader = shader; }
 
 		std::vector<Submesh> m_Submeshes;
 		std::string m_Directory;
-		Ref<Shader> m_Shader;
+		std::string m_Path;
 	};
 }

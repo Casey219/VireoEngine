@@ -28,6 +28,7 @@ namespace Vireo {
 
 
 		virtual const std::string& GetName() const override { return m_Name; }
+		virtual const std::string& GetFilePath() const override { return m_FilePath; }
 
 		void UploadUniformInt(const std::string& name, int value);
 		void UploadUniformIntArray(const std::string& name, int* values, uint32_t count);

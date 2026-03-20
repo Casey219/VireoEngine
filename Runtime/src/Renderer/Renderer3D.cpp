@@ -198,15 +198,15 @@ namespace Vireo {
 	}
 
 	// Renderer3D.cpp
-	void Renderer3D::DrawMesh(const Ref<Mesh>& mesh, const Ref<Material>& material, const glm::mat4& transform, int entityID)
+	void Renderer3D::DrawMesh(const Ref<Mesh>& mesh, const Ref<Material>& material, const Ref<Shader>& shader,const glm::mat4& transform, int entityID)
 	{
 		s_Data.MeshBuffer.Transform = transform;
 		s_Data.MeshBuffer.EntityID = entityID;
 		s_Data.MeshUniformBuffer->SetData(&s_Data.MeshBuffer, sizeof(MeshElementData));
 
-		// 2. 绑定材质 (激活 Shader 和 纹理)
+		// 2. 绑定材质 
 		material->Bind();
-
+		shader->Bind();
 		// 3. 绑定几何并绘制
 		mesh->GetVertexArray()->Bind();
 		RenderCommand::DrawIndexed(mesh->GetVertexArray(), mesh->GetIndexCount());

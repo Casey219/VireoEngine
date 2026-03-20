@@ -9,6 +9,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+#include <Model/Model.h>
 
 namespace Vireo {
 	
@@ -70,6 +71,33 @@ namespace Vireo {
 		SpriteRendererComponent(const glm::vec4& color)
 			: Color(color) {
 		}
+	};
+
+
+	// 3D 模型组件
+	struct MeshRendererComponent
+	{
+		Ref<Model> MeshModel;
+		Ref<Shader> MeshShader;
+		// 可以预留材质覆盖，如果不设置则使用模型自带材质
+		// Ref<Material> MaterialOverride; 
+
+		MeshRendererComponent() = default;
+		MeshRendererComponent(const MeshRendererComponent&) = default;
+		MeshRendererComponent(const Ref<Model>& model,const Ref<Shader> shader)
+			: MeshModel(model),MeshShader(shader){
+		}
+	};
+
+	// 点光源组件
+	struct PointLightComponent
+	{
+		glm::vec3 Color = { 1.0f, 1.0f, 1.0f };
+		float Intensity = 1.0f;
+		float Radius = 10.0f; // 用于延迟渲染或衰减计算
+
+		PointLightComponent() = default;
+		PointLightComponent(const PointLightComponent&) = default;
 	};
 
 	struct CameraComponent

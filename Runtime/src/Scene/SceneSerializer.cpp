@@ -7,6 +7,7 @@
 #include <fstream>
 
 #include <yaml-cpp/yaml.h>
+#include "Utils/AssetManager.h"
 
 namespace YAML {
 
@@ -192,6 +193,31 @@ namespace Vireo {
 			out << YAML::EndMap; // CameraComponent
 		}
 
+		if (entity.HasComponent<PointLightComponent>())
+		{
+			out << YAML::Key << "PointLightComponent";
+			out << YAML::BeginMap; // PointLightComponent
+
+			auto& pointLight = entity.GetComponent<PointLightComponent>();
+			out << YAML::Key << "Color" << YAML::Value << pointLight.Color;
+			out << YAML::Key << "Intensity" << YAML::Value << pointLight.Intensity;
+			out << YAML::Key << "Radius" << YAML::Value << pointLight.Radius; // 如果你定义了半径
+
+			out << YAML::EndMap; // PointLightComponent
+		}
+
+		if (entity.HasComponent<MeshRendererComponent>())
+		{
+			out << YAML::Key << "MeshRendererComponent";
+			out << YAML::BeginMap;
+			auto& mesh = entity.GetComponent<MeshRendererComponent>();
+			// 这里保存模型路径，假设 Model 类有 GetPath()
+			out << YAML::Key << "AssetPath" << YAML::Value << mesh.MeshModel->GetPath();
+			out << YAML::Key << "ShaderPath" << YAML::Value << mesh.MeshShader->GetFilePath();
+			out << YAML::EndMap;
+		}
+
+
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
 			out << YAML::Key << "SpriteRendererComponent";
@@ -327,6 +353,36 @@ namespace Vireo {
 
 					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
+				}
+
+				auto pointLightComponent = entity["PointLightComponent"];
+				if (pointLightComponent)
+				{
+					auto& plc = deserializedEntity.AddOrReplaceComponent<PointLightComponent>();
+					plc.Color = pointLightComponent["Color"].as<glm::vec3>();
+					plc.Intensity = pointLightComponent["Intensity"].as<float>();
+			
+					if (pointLightComponent["Radius"])
+						plc.Radius = pointLightComponent["Radius"].as<float>();
+				}
+
+				auto meshRendererComponent = entity["MeshRendererComponent"];
+				if (meshRendererComponent)
+				{
+					std::string assetPath = meshRendererComponent["AssetPath"].as<std::string>();
+					std::string shaderPath = meshRendererComponent["ShaderPath"].as<std::string>();
+					
+					Ref<Model> model = AssetManager::GetModel(assetPath);
+					
+					Ref<Shader> shader = Shader::Create(shaderPath);
+					if (model)
+					{
+						auto& mrc = deserializedEntity.AddComponent<MeshRendererComponent>(model,shader);
+					}
+					else
+					{
+						VIR_CORE_ERROR("Failed to load model at path: {0}", assetPath);
+					}
 				}
 
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];
