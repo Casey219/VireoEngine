@@ -19,16 +19,17 @@ namespace Vireo {
 
 		Renderer3D::Init();
 		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
-
 		
-		auto meshShader = Shader::Create("assets/shaders/DefaultMesh.glsl");
+		
+		auto meshShader = Shader::Create("assets/shaders/BlinnPhong.glsl");
+		//auto meshShader = Shader::Create("assets/shaders/DefaultMesh.glsl");
 
 		// 加载模型（Model 类内部会调用 Assimp 并创建多个 Submesh）
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Sphere/globe-sphere.mtl", meshShader);
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX", meshShader);
-		//m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf", meshShader);
+		m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf", meshShader);
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj", meshShader);
-		m_BackpackModel = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj",meshShader);
+		//m_BackpackModel = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj",meshShader);
 
 		VIR_CORE_ASSERT(m_BackpackModel->GetSubmeshes().size() > 0, "Failed to load model or model has no submeshes!");
 		
@@ -52,15 +53,19 @@ namespace Vireo {
 		RenderCommand::EnableDepthTest();
 
 		// 开始 3D 场景渲染（上传 Camera Uniform Buffer）
+		//Renderer3D::BeginScene(m_EditorCamera);
+		static float time = 0.0f;
+		time += ts;
+		glm::vec3 dynamicLightPos = { glm::sin(time) * 5.0f, 2.0f, glm::cos(time) * 5.0f };
+		//Renderer3D::BeginScene(m_EditorCamera, dynamicLightPos);
 		Renderer3D::BeginScene(m_EditorCamera);
-
 		/*
 		// 提交绘制请求
 		// 绘制一个带纹理的平铺地面
 		glm::mat4 floorTransform = glm::translate(glm::mat4(1.0f), { 0.0f, -1.0f, 0.0f })
 			* glm::scale(glm::mat4(1.0f), { 10.0f, 0.1f, 10.0f });
 		Renderer3D::DrawCube(floorTransform,m_Texture,5.0f,{ 0.8f, 0.8f, 0.8f, 1.0f });
-
+*/
 		// 绘制一个红色的旋转立方体
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
@@ -69,11 +74,11 @@ namespace Vireo {
 			* glm::scale(glm::mat4(1.0f), { 1.5f, 1.5f, 1.5f });
 
 		//
-		Renderer3D::DrawCube(cubeTransform,nullptr,1.0f,{ 1.0f, 0.3f, 0.3f, 1.0f });
-		*/
+		//Renderer3D::DrawCube(cubeTransform,nullptr,1.0f,{ 1.0f, 0.3f, 0.3f, 1.0f });
+		
 		for (auto& submesh : m_BackpackModel->GetSubmeshes())
 		{
-			Renderer3D::DrawMesh(submesh.MeshData, submesh.Mat);
+			Renderer3D::DrawMesh(submesh.MeshData, submesh.Mat,cubeTransform);
 		}
 
 		// 结束场景

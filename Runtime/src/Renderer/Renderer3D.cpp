@@ -26,6 +26,17 @@ namespace Vireo {
 		float Padding[3]; // 补齐到 16 字节对齐，确保 std140 布局正确
 	};
 
+	struct SceneData {
+		glm::mat4 ViewProjection; // 64 bytes
+		glm::vec3 CameraPosition; // 12 bytes
+		float Padding;            // 4 bytes (对齐到 16 字节)
+	};
+
+	struct LightData {
+		glm::vec4 Position;       // 16 bytes (w 可以存强度 Intensity)
+		glm::vec4 Color;          // 16 bytes
+	};
+
 	struct Renderer3DData {
 		static const uint32_t MaxCubes = 10000;
 		static const uint32_t MaxVertices = MaxCubes * 24; // 每个立方体 24 个独立顶点
@@ -52,11 +63,11 @@ namespace Vireo {
 		};
 		std::vector<CubeFaceData> UnitCube;
 
-		struct CameraData {
-			glm::mat4 ViewProjection;
-		};
-		CameraData CameraBuffer;
-		Ref<UniformBuffer> CameraUniformBuffer;
+		SceneData SceneBuffer;
+		Ref<UniformBuffer> SceneUBO;
+
+		LightData LightBuffer;
+		Ref<UniformBuffer> LightUBO;
 
 		Ref<UniformBuffer> MeshUniformBuffer;
 		MeshElementData MeshBuffer;
@@ -96,7 +107,7 @@ namespace Vireo {
 		s_Data.WhiteTexture->SetData(&whiteData, sizeof(uint32_t));
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 		s_Data.CubeShader = Shader::Create("assets/shaders/Renderer3D.glsl");
-		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer3DData::CameraData), 0);
+		s_Data.SceneUBO = UniformBuffer::Create(sizeof(SceneData), 0);
 
 		// 4. 定义单位立方体 (此处仅示例一个面的逻辑，实际需填满 6 个面)
 		// 每个面 4 个点: {Pos, Normal, UV}
@@ -141,11 +152,19 @@ namespace Vireo {
 
 
 		s_Data.MeshUniformBuffer = UniformBuffer::Create(sizeof(MeshElementData), 1);
+		s_Data.LightUBO = UniformBuffer::Create(sizeof(LightData), 2);
 	}
 
-	void Renderer3D::BeginScene(const EditorCamera& camera) {
-		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
-		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer3DData::CameraData));
+	void Renderer3D::BeginScene(const EditorCamera& camera, const glm::vec3& lightPos, const glm::vec4& lightColor) {
+		// 1. 更新相机数据 (Binding 0)
+		s_Data.SceneBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.SceneBuffer.CameraPosition = camera.GetPosition();
+		s_Data.SceneUBO->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
+
+		// 2. 更新灯光数据 (Binding 2)
+		s_Data.LightBuffer.Position = glm::vec4(lightPos, 1.0f);
+		s_Data.LightBuffer.Color = lightColor;
+		s_Data.LightUBO->SetData(&s_Data.LightBuffer, sizeof(LightData));
 
 		StartBatch();
 	}

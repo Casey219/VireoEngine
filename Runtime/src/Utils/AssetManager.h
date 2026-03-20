@@ -11,6 +11,7 @@ namespace Vireo {
 
 		// 核心接口：纹理
 		static Ref<Texture2D> GetTexture(const std::string& path);
+		static Ref<Texture2D> GetWhiteTexture() { return s_WhiteTexture; }
 
 		// 核心接口：模型
 		static Ref<Model> GetModel(const std::string& path,const Ref<Shader>& shader=nullptr);

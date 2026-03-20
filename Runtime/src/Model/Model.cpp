@@ -59,10 +59,8 @@ namespace Vireo {
 			}
 			else {
 				VIR_CORE_WARN("Mesh has material but no diffuse texture found!");
-				Ref<Texture2D> WhiteTexture = Texture2D::Create(1, 1);
-				uint32_t whiteData = 0xffffffff;
-				WhiteTexture->SetData(&whiteData, sizeof(uint32_t));
-				material->SetAlbedo(WhiteTexture);
+				
+				material->SetAlbedo(AssetManager::GetWhiteTexture());
 			}
 		}
 
