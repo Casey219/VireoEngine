@@ -6,7 +6,8 @@
 namespace Vireo {
 	void Model::LoadModel(const std::string& path) {
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals |
+			aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) return;
 		m_Directory = path.substr(0, path.find_last_of('/'));
@@ -31,6 +32,8 @@ namespace Vireo {
 			MeshVertex v;
 			v.Position = { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z };
 			v.Normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
+			if (mesh->mTangents)
+				v.Tangent = { mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z };
 			if (mesh->mTextureCoords[0])
 				v.TexCoord = { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y };
 			else
@@ -45,6 +48,7 @@ namespace Vireo {
 			for (uint32_t j = 0; j < face.mNumIndices; j++)
 				indices.push_back(face.mIndices[j]);
 		}
+
 
 		// 3. 处理材质联系 
 		Ref<Material> material = std::make_shared<Material>();
@@ -62,6 +66,32 @@ namespace Vireo {
 				
 				material->SetAlbedo(AssetManager::GetWhiteTexture());
 			}
+
+			if (aiMat->GetTexture(aiTextureType_NORMALS, 0, &str) == AI_SUCCESS|| aiMat->GetTexture(aiTextureType_NORMAL_CAMERA, 0, &str) == AI_SUCCESS|| aiMat->GetTexture(aiTextureType_HEIGHT, 0, &str) == AI_SUCCESS) {
+				material->NormalMap = AssetManager::GetTexture(m_Directory + "/" + str.C_Str());
+				VIR_CORE_INFO("Loaded normal map: {0}", m_Directory + "/" + str.C_Str());
+			}
+			if (aiMat->GetTexture(aiTextureType_METALNESS, 0, &str) == AI_SUCCESS|| aiMat->GetTexture(aiTextureType_SPECULAR, 0, &str) == AI_SUCCESS)
+			{
+				material->MetallicMap = AssetManager::GetTexture(m_Directory + "/" + str.C_Str());
+				VIR_CORE_INFO("Loaded metallic map: {0}", m_Directory + "/" + str.C_Str());
+			}
+			if(aiMat->GetTexture(aiTextureType_DIFFUSE_ROUGHNESS, 0, &str) == AI_SUCCESS)
+			{
+				material->RoughnessMap = AssetManager::GetTexture(m_Directory + "/" + str.C_Str());
+				VIR_CORE_INFO("Loaded roughness map: {0}", m_Directory + "/" + str.C_Str());
+			}
+			if(aiMat->GetTexture(aiTextureType_UNKNOWN, 0, &str) == AI_SUCCESS)
+			{
+				material->MetallicRoughnessMap = AssetManager::GetTexture(m_Directory + "/" + str.C_Str());
+				VIR_CORE_INFO("Loaded metallic-roughness map: {0}", m_Directory + "/" + str.C_Str());
+			}
+			if(aiMat->GetTexture(aiTextureType_AMBIENT, 0, &str) == AI_SUCCESS|| aiMat->GetTexture(aiTextureType_AMBIENT_OCCLUSION, 0, &str) == AI_SUCCESS)
+			{
+				material->AOMap = AssetManager::GetTexture(m_Directory + "/" + str.C_Str());
+				VIR_CORE_INFO("Loaded AO map: {0}", m_Directory + "/" + str.C_Str());
+			}
+				
 		}
 
 		return { std::make_shared<Mesh>(vertices, indices), material};

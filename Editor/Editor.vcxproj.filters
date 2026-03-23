@@ -47,4 +47,7 @@
     </ClCompile>
     <ClCompile Include="src\Render3DLayer.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\PBR2.glsl" />
+  </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 
 namespace Vireo {
 	Render3DLayer::Render3DLayer()
-		: Layer("Render3DLayer"), m_EditorCamera(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f)
+		: Layer("Render3DLayer"), m_EditorCamera(45.0f, 1280.0f / 720.0f, 0.1f, 1000.0f)
 	{
 	}
 	void Render3DLayer::OnAttach()
@@ -14,8 +14,8 @@ namespace Vireo {
 		
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
-		fbSpec.Width = 1280;
-		fbSpec.Height = 720;
+		fbSpec.Width = 1600;
+		fbSpec.Height = 900;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 
@@ -23,16 +23,23 @@ namespace Vireo {
 		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
 		
 		
-		m_MeshShader = Shader::Create("assets/shaders/BlinnPhong.glsl");
+		m_MeshShader = Shader::Create("assets/shaders/PBR2.glsl");
+		//m_MeshShader = Shader::Create("assets/shaders/BlinnPhong.glsl");
+
 		//auto meshShader = Shader::Create("assets/shaders/DefaultMesh.glsl");
 
 		// 加载模型（Model 类内部会调用 Assimp 并创建多个 Submesh）
-		//m_BackpackModel = std::make_shared<Model>("assets/models/Sphere/globe-sphere.mtl", meshShader);
-		//m_BackpackModel = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX", meshShader);
-		m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf");
-		//m_BackpackModel = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj", meshShader);
-		//m_BackpackModel = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj",meshShader);
+		m_BackpackModel = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/mosin/mosin.gltf");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Default/Sphere.gltf");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Sponza/Sponza.gltf");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/cerberus/cerberus.gltf");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Vampire/dancing_vampire.dae");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj");
+		//m_BackpackModel = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj";
 
+		
 		VIR_CORE_ASSERT(m_BackpackModel->GetSubmeshes().size() > 0, "Failed to load model or model has no submeshes!");
 		
 		VIR_INFO("Model loaded with {0} submeshes", m_BackpackModel->GetSubmeshes().size());
@@ -50,10 +57,16 @@ namespace Vireo {
 	{
 		
 		m_EditorCamera.OnUpdate(ts);
-
-		// 准备渲染环境
+		//m_Framebuffer->Bind();
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
+
+
+		//Renderer2D::BeginScene(m_CameraController.GetCamera());
+		//m_Framebuffer->ClearAttachment(1, -1);
+		// 准备渲染环境
+		//RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		//RenderCommand::Clear();
 
 		// 开启深度测试
 		RenderCommand::EnableDepthTest();
