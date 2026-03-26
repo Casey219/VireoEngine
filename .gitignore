@@ -3,6 +3,7 @@
 bin/
 bin-int/
 backup/
+Editor/assets/cache/
 
 #files
 *.user

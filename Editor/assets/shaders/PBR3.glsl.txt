@@ -164,7 +164,7 @@ void main() {
         N = texture(u_NormalMap, v_TexCoord).rgb * 2.0 - 1.0;
         N = normalize(v_TBN * N);
     }
-	*/+
+	*/
     vec3 V = normalize(u_CameraPos - v_WorldPos);
     vec3 F0 = mix(vec3(0.04), albedo, metallic); // »ù´¡·´ÉäÂÊ 
 

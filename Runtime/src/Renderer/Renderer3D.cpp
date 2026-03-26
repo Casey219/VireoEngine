@@ -6,6 +6,7 @@
 #include "UniformBuffer.h"
 #include "RenderCommand.h"
 
+
 namespace Vireo {
 	
 	struct CubeVertex {
@@ -35,6 +36,10 @@ namespace Vireo {
 	struct LightData {
 		glm::vec4 Position;       // 16 bytes (w 可以存强度 Intensity)
 		glm::vec4 Color;          // 16 bytes
+	};
+
+	struct TestData {
+		glm::vec4 testVec;
 	};
 
 	struct Renderer3DData {
@@ -71,6 +76,10 @@ namespace Vireo {
 
 		Ref<UniformBuffer> MeshUniformBuffer;
 		MeshElementData MeshBuffer;
+
+		// Test UBO
+		Ref<UniformBuffer> TestUBO;
+		TestData TestBuffer;
 	};
 	static Renderer3DData s_Data;
 
@@ -106,7 +115,8 @@ namespace Vireo {
 		uint32_t whiteData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteData, sizeof(uint32_t));
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
-		s_Data.CubeShader = Shader::Create("assets/shaders/Renderer3D.glsl");
+		//s_Data.CubeShader = Shader::Create("assets/shaders/Renderer3D.glsl");
+		s_Data.CubeShader = Shader::Create("assets/shaders/RenderCube.glsl");
 		s_Data.SceneUBO = UniformBuffer::Create(sizeof(SceneData), 0);
 
 		// 4. 定义单位立方体 (此处仅示例一个面的逻辑，实际需填满 6 个面)
@@ -152,19 +162,22 @@ namespace Vireo {
 
 
 		s_Data.MeshUniformBuffer = UniformBuffer::Create(sizeof(MeshElementData), 1);
-		s_Data.LightUBO = UniformBuffer::Create(sizeof(LightData), 2);
+		//s_Data.LightUBO = UniformBuffer::Create(sizeof(LightData), 2);
+		s_Data.TestUBO = UniformBuffer::Create(sizeof(TestData), 3);
 	}
 
-	void Renderer3D::BeginScene(const EditorCamera& camera, const glm::vec3& lightPos, const glm::vec4& lightColor) {
+	void Renderer3D::BeginScene(const EditorCamera& camera) {
 		// 1. 更新相机数据 (Binding 0)
 		s_Data.SceneBuffer.ViewProjection = camera.GetViewProjection();
 		s_Data.SceneBuffer.CameraPosition = camera.GetPosition();
 		s_Data.SceneUBO->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
 
+		s_Data.TestBuffer.testVec = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+		s_Data.TestUBO->SetData(&s_Data.TestBuffer, sizeof(TestData));
 		// 2. 更新灯光数据 (Binding 2)
-		s_Data.LightBuffer.Position = glm::vec4(lightPos, 1.0f);
+		/*s_Data.LightBuffer.Position = glm::vec4(lightPos, 1.0f);
 		s_Data.LightBuffer.Color = lightColor;
-		s_Data.LightUBO->SetData(&s_Data.LightBuffer, sizeof(LightData));
+		s_Data.LightUBO->SetData(&s_Data.LightBuffer, sizeof(LightData));*/
 
 		StartBatch();
 	}
@@ -203,7 +216,8 @@ namespace Vireo {
 		s_Data.MeshBuffer.Transform = transform;
 		s_Data.MeshBuffer.EntityID = entityID;
 		s_Data.MeshUniformBuffer->SetData(&s_Data.MeshBuffer, sizeof(MeshElementData));
-
+		glm::vec4 testVec(1.0f, 0.0f, 0.0f, 1.0f);
+		
 		// 2. 绑定材质 
 		material->Bind();
 		shader->Bind();

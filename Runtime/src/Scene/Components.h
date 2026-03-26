@@ -98,6 +98,16 @@ namespace Vireo {
 
 		PointLightComponent() = default;
 		PointLightComponent(const PointLightComponent&) = default;
+		PointLightComponent(const glm::vec3& color, float intensity, float radius)
+			: Color(color), Intensity(intensity), Radius(radius) {
+		}
+		PointLightComponent(const glm::vec3& color, float intensity)
+			: Color(color), Intensity(intensity) {
+		}
+		PointLightComponent(const glm::vec3& color)
+			: Color(color) {
+		}
+		
 	};
 
 	struct CameraComponent

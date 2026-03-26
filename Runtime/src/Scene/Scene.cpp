@@ -10,7 +10,10 @@
 #include "box2d/b2_fixture.h"
 #include "box2d/b2_polygon_shape.h"
 #include "ScriptableEntity.h"
-#include "Renderer/Renderer3D.h"
+
+#include "Utils/AssetManager.h"
+
+
 
 namespace Vireo {
 
@@ -29,6 +32,8 @@ namespace Vireo {
 
 	Scene::Scene()
 	{
+		m_LightData.LightCount = 0;
+		m_LightUBO = UniformBuffer::Create(sizeof(LightSceneData), 2);
 	}
 
 	Scene::~Scene()
@@ -55,6 +60,15 @@ namespace Vireo {
 	{
 		if (src.HasComponent<Component>())
 			dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
+	}
+
+	void Scene::AddPointLight(const glm::vec3& pos, const glm::vec3& color, float intensity) {
+		if (m_LightData.LightCount < 16) {
+			auto& light = m_LightData.Lights[m_LightData.LightCount];
+			light.Position = glm::vec4(pos, intensity);
+			light.Color = glm::vec4(color, 1.0f);
+			m_LightData.LightCount++;
+		}
 	}
 
 	Ref<Scene> Scene::Copy(Ref<Scene> other)
@@ -233,17 +247,30 @@ namespace Vireo {
 
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
-		Renderer2D::BeginScene(camera);
+		//sizeof(m_LightData);
+		std::memset(&m_LightData, 0, sizeof(LightSceneData));
+		m_LightUBO->SetData(&m_LightData, sizeof(LightSceneData));
+		auto lights = m_Registry.view<PointLightComponent, TransformComponent>();
+		for(auto entity : lights) {
+			auto [light, transform] = lights.get<PointLightComponent, TransformComponent>(entity);
+			AddPointLight(transform.Translation, light.Color, light.Intensity);
+
+			Renderer3D::DrawCube(transform.GetTransform(), AssetManager::GetWhiteTexture(), 1.0f, glm::vec4(light.Color,1.0), (int)entity);
+		}
+		m_LightUBO->SetData(&m_LightData, sizeof(LightSceneData));
+		//VIR_CORE_INFO("light position:({0},{1},{2})", m_LightData.Lights[0].Position.x, m_LightData.Lights[0].Position.y, m_LightData.Lights[0].Position.z);
+		
+		
 		auto view = m_Registry.view<MeshRendererComponent, TransformComponent>();
 		for (auto entity : view) {
 			auto[mesh,transform] = view.get<MeshRendererComponent,TransformComponent>(entity);
 			for (auto& submesh : mesh.MeshModel->GetSubmeshes()) {
+				VIR_CORE_INFO("Draw Mesh Transform:{0},{1},{2}", transform.Translation.x,transform.Translation.y,transform.Translation.z);
 				Renderer3D::DrawMesh(submesh.MeshData, submesh.MaterialData,mesh.MeshShader, transform.GetTransform());
 			}
-				
-
 			
 		}
+		Renderer2D::BeginScene(camera);
 		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 		for (auto entity : group)
 		{
@@ -253,6 +280,7 @@ namespace Vireo {
 		}
 
 		Renderer2D::EndScene();
+		
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)

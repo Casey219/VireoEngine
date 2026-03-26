@@ -37,6 +37,8 @@ namespace Vireo {
 			m_Params.HasMRMap = MetallicRoughnessMap ? 1 : 0;
 			if (MetallicRoughnessMap) {
 				MetallicRoughnessMap->Bind(4);
+				m_Params.HasMetallicMap = 0;
+				m_Params.HasRoughnessMap = 0;
 			}
 			else {
 				m_Params.HasMetallicMap = MetallicMap ? 1 : 0;

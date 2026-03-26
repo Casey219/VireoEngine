@@ -5,7 +5,7 @@
 
 #include "Camera/EditorCamera.h"
 #include "Core/UUID.h"
-
+#include "Renderer/Renderer3D.h"
 
 class b2World;
 namespace Vireo
@@ -36,6 +36,10 @@ namespace Vireo
 		void DuplicateEntity(Entity entity);
 
 		Entity GetPrimaryCameraEntity();
+
+
+		void AddPointLight(const glm::vec3& pos, const glm::vec3& color, float intensity);
+		
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
@@ -48,5 +52,8 @@ namespace Vireo
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 		friend class SceneSerializer;
+
+		LightSceneData m_LightData;
+		Ref<UniformBuffer> m_LightUBO;
 	};
 }

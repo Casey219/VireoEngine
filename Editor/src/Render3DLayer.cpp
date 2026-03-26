@@ -20,22 +20,22 @@ namespace Vireo {
 
 
 		Renderer3D::Init();
-		m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
+		//m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
+		//auto shader = Shader::Create("assets/shaders/PBR3.glsl");
 		
-		
-		m_MeshShader = Shader::Create("assets/shaders/PBR2.glsl");
-		//m_MeshShader = Shader::Create("assets/shaders/BlinnPhong.glsl");
+		//m_MeshShader = Shader::Create("assets/shaders/PBR3.glsl");
+		m_MeshShader = Shader::Create("assets/shaders/BlinnPhongMultiLights.glsl");
 
 		//auto meshShader = Shader::Create("assets/shaders/DefaultMesh.glsl");
 
 		// 加载模型（Model 类内部会调用 Assimp 并创建多个 Submesh）
-		m_BackpackModel = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX");
+		//m_BackpackModel = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX");
 		//m_BackpackModel = std::make_shared<Model>("assets/models/mosin/mosin.gltf");
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Default/Sphere.gltf");
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Sponza/Sponza.gltf");
 		//m_BackpackModel = std::make_shared<Model>("assets/models/cerberus/cerberus.gltf");
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Vampire/dancing_vampire.dae");
-		//m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf");
+		m_BackpackModel = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf");
 		//m_BackpackModel = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj");
 		//m_BackpackModel = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj";
 
@@ -45,8 +45,39 @@ namespace Vireo {
 		VIR_INFO("Model loaded with {0} submeshes", m_BackpackModel->GetSubmeshes().size());
 
 		m_Scene = CreateRef<Scene>();
+		//m_Scene->AddPointLight({ 1.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, 1.0f);
+		//m_Scene->AddPointLight({ -1.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, 1.0f);
 
-		m_Scene->CreateEntity("Model Entity").AddComponent<MeshRendererComponent>(m_BackpackModel, m_MeshShader);
+		//m_Scene->AddPointLight({ 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 1.0f }, 1.0f);//m_Scene->AddPointLight({ 15.0f, 15.0f, 15.0f }, { 1.0f, 1.0f, 1.0f }, 0.2f);
+		//m_Scene->AddPointLight({ 0.0f, 0.0f, -1.0f }, { 1.0f, 1.0f, 1.0f }, 2.0f);//m_Scene->AddPointLight({ 15.0f, 15.0f, 15.0f }, { 1.0f, 1.0f, 1.0f }, 0.2f);
+		//m_Scene->AddPointLight({ -5.0f, 5.0f, -5.0f }, { 1.0f, 1.0f, 1.0f }, 1.0f);
+		auto light1 = m_Scene->CreateEntity("Light Entity1");
+		light1.AddComponent<PointLightComponent>();
+		light1.GetComponent<TransformComponent>().Scale = glm::vec3(0.1f);
+		light1.GetComponent<TransformComponent>().Translation = glm::vec3(2.0f, 3.0f, 1.0f);
+		auto light2 = m_Scene->CreateEntity("Light Entity2");
+		light2.AddComponent<PointLightComponent>();
+		light2.GetComponent<TransformComponent>().Scale = glm::vec3(0.1f);
+		light2.GetComponent<TransformComponent>().Translation = glm::vec3(-2.0f, 3.0f, -1.0f);
+		
+		//auto model2 = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj");
+		//auto Entity2 = m_Scene->CreateEntity("Model Entity3");
+		//Entity2.AddComponent<MeshRendererComponent>(model2, m_MeshShader);
+		////Entity2.GetComponent<TransformComponent>().Scale = glm::vec3(0.01f);
+		//Entity2.GetComponent<TransformComponent>().Translation = glm::vec3(5.0, 0.0f, -2.0f);
+		
+		auto Entity1 = m_Scene->CreateEntity("Model Entity");
+		Entity1.AddComponent<MeshRendererComponent>(m_BackpackModel, m_MeshShader);
+		//Entity1.GetComponent<TransformComponent>().Scale = glm::vec3(1.0f);
+		//Entity1.GetComponent<TransformComponent>().Translation = glm::vec3(-5.0f, 0.0f, 0.0f);
+		/*auto model = std::make_shared<Model>("assets/models/Cerberus_Gun/Cerberus_LP.FBX");
+		auto Entity1 = m_Scene->CreateEntity("Model Entity2");
+		Entity1.AddComponent<MeshRendererComponent>(model, m_MeshShader);
+		Entity1.GetComponent<TransformComponent>().Scale = glm::vec3(0.005f);
+		Entity1.GetComponent<TransformComponent>().Translation = glm::vec3(0.0f, 0.0f, -2.0f);*/
+
+		
+
 		
 	}
 	void Render3DLayer::OnDetach()
