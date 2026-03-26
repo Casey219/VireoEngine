@@ -15,6 +15,10 @@ namespace Vireo {
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
+	void OpenGLUniformBuffer::BindRange(uint32_t slot, uint32_t offset, uint32_t size)
+	{
+		glBindBufferRange(GL_UNIFORM_BUFFER, slot, m_RendererID, offset, size);
+	}
 
 	void OpenGLUniformBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
 	{

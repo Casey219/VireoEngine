@@ -4,6 +4,7 @@ bin/
 bin-int/
 backup/
 Editor/assets/cache/
+assets/
 
 #files
 *.user

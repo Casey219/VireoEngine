@@ -5,7 +5,7 @@
 #include "Texture.h"
 #include "UniformBuffer.h"
 #include "RenderCommand.h"
-
+#include <glad/glad.h>
 
 namespace Vireo {
 	
@@ -74,8 +74,11 @@ namespace Vireo {
 		LightData LightBuffer;
 		Ref<UniformBuffer> LightUBO;
 
-		Ref<UniformBuffer> MeshUniformBuffer;
+		//Ref<UniformBuffer> MeshUniformBuffer;
 		MeshElementData MeshBuffer;
+		Ref<UniformBuffer> MeshUniformBuffer;
+		uint32_t UBOAlignment = 0; // 存储显卡的对齐要求
+		uint32_t MaxInstances = 1000; // 一帧最多支持的模型数
 
 		// Test UBO
 		Ref<UniformBuffer> TestUBO;
@@ -161,11 +164,26 @@ namespace Vireo {
 		};
 
 
-		s_Data.MeshUniformBuffer = UniformBuffer::Create(sizeof(MeshElementData), 1);
+		//s_Data.MeshUniformBuffer = UniformBuffer::Create(sizeof(MeshElementData), 1);
+		GLint alignment;
+		glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &alignment);
+		s_Data.UBOAlignment = (uint32_t)alignment;
+		VIR_CORE_INFO("Uniform Buffer Object Alignment: {0} bytes", s_Data.UBOAlignment);
+
+		// 计算单个物体占用的实际空间（必须是对齐值的整数倍）
+		// 假设 sizeof(MeshElementData) = 80，对齐 = 256，则每个实例占用 256
+		uint32_t instanceSize = (sizeof(MeshElementData) + alignment - 1) & ~(alignment - 1);
+		VIR_CORE_INFO("Mesh Element Data Size: {0} bytes, Aligned Instance Size: {1} bytes", sizeof(MeshElementData), instanceSize);
+
+		// 创建一个足以容纳所有实例的大 Buffer
+		s_Data.MeshUniformBuffer = UniformBuffer::Create(instanceSize * s_Data.MaxInstances, 1);
+
+
+
 		//s_Data.LightUBO = UniformBuffer::Create(sizeof(LightData), 2);
 		s_Data.TestUBO = UniformBuffer::Create(sizeof(TestData), 3);
 	}
-
+	static uint32_t s_MeshInstanceCount = 0;
 	void Renderer3D::BeginScene(const EditorCamera& camera) {
 		// 1. 更新相机数据 (Binding 0)
 		s_Data.SceneBuffer.ViewProjection = camera.GetViewProjection();
@@ -178,6 +196,9 @@ namespace Vireo {
 		/*s_Data.LightBuffer.Position = glm::vec4(lightPos, 1.0f);
 		s_Data.LightBuffer.Color = lightColor;
 		s_Data.LightUBO->SetData(&s_Data.LightBuffer, sizeof(LightData));*/
+
+
+		s_MeshInstanceCount = 0;
 
 		StartBatch();
 	}
@@ -213,10 +234,26 @@ namespace Vireo {
 	// Renderer3D.cpp
 	void Renderer3D::DrawMesh(const Ref<Mesh>& mesh, const Ref<Material>& material, const Ref<Shader>& shader,const glm::mat4& transform, int entityID)
 	{
-		s_Data.MeshBuffer.Transform = transform;
+		/*s_Data.MeshBuffer.Transform = transform;
 		s_Data.MeshBuffer.EntityID = entityID;
 		s_Data.MeshUniformBuffer->SetData(&s_Data.MeshBuffer, sizeof(MeshElementData));
-		glm::vec4 testVec(1.0f, 0.0f, 0.0f, 1.0f);
+		glm::vec4 testVec(1.0f, 0.0f, 0.0f, 1.0f);*/
+
+
+		uint32_t instanceSize = (sizeof(MeshElementData) + s_Data.UBOAlignment - 1) & ~(s_Data.UBOAlignment - 1);
+		uint32_t currentOffset = s_MeshInstanceCount * instanceSize;
+
+		// 2. 准备数据
+		s_Data.MeshBuffer.Transform = transform;
+		s_Data.MeshBuffer.EntityID = entityID;
+
+		// 3. 上传数据到 Buffer 的特定位置
+		s_Data.MeshUniformBuffer->SetData(&s_Data.MeshBuffer, sizeof(MeshElementData), currentOffset);
+
+		// 4. 关键：告诉 OpenGL 这一次 Draw Call 只读取这个 Offset 开始的一小段数据
+		// 绑定到 Binding Point 1
+		s_Data.MeshUniformBuffer->BindRange(1, currentOffset, sizeof(MeshElementData));
+		//glBindBufferRange(GL_UNIFORM_BUFFER, 1, s_Data.MeshUniformBuffer->GetRendererID(), currentOffset, sizeof(MeshElementData));
 		
 		// 2. 绑定材质 
 		material->Bind();
