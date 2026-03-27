@@ -21,10 +21,15 @@ namespace Vireo {
 		int EntityID;       
 	};
 
+	//struct MeshElementData {
+	//	glm::mat4 Transform;
+	//	int EntityID;
+	//	float Padding[3]; // 补齐到 16 字节对齐，确保 std140 布局正确
+	//};
+
 	struct MeshElementData {
 		glm::mat4 Transform;
-		int EntityID;
-		float Padding[3]; // 补齐到 16 字节对齐，确保 std140 布局正确
+		glm::ivec4 EntityData;
 	};
 
 	struct SceneData {
@@ -244,7 +249,7 @@ namespace Vireo {
 
 		// 2. 准备数据
 		s_Data.MeshBuffer.Transform = transform;
-		s_Data.MeshBuffer.EntityID = entityID;
+		s_Data.MeshBuffer.EntityData = glm::ivec4(entityID, 0, 0, 0);
 
 		// 3. 上传数据到 Buffer 的特定位置
 		s_Data.MeshUniformBuffer->SetData(&s_Data.MeshBuffer, sizeof(MeshElementData), currentOffset);

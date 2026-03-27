@@ -13,9 +13,8 @@ layout(std140, binding = 0) uniform SceneData {
 };
 
 layout(std140, binding = 1) uniform ModelData {
-    mat4 u_Transform;
-	int u_EntityID; 
-	float v_Padding[3];
+	mat4 u_Transform;
+	ivec4 u_EntityData; // x: EntityID, yzw: padding
 };
 
 
@@ -53,8 +52,7 @@ layout(std140, binding = 0) uniform SceneData {
 
 layout(std140, binding = 1) uniform ModelData {
 	mat4 u_Transform;
-	int u_EntityID;
-	float v_Padding[3];
+	ivec4 u_EntityData; // x: EntityID, yzw: padding
 };
 
 struct Light {
@@ -113,6 +111,6 @@ void main()
     
     vec3 ambient = AMBIENT_STRENGTH * albedo;
     color = vec4(ambient + totalDiffuseSpecular, 1.0);
-	color2=u_EntityID;
+	color2=u_EntityData.x;
 
 }

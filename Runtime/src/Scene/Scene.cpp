@@ -267,7 +267,7 @@ namespace Vireo {
 			auto[mesh,transform] = view.get<MeshRendererComponent,TransformComponent>(entity);
 			for (auto& submesh : mesh.MeshModel->GetSubmeshes()) {
 				//VIR_CORE_INFO("Draw Mesh Transform:{0},{1},{2}", transform.Translation.x,transform.Translation.y,transform.Translation.z);
-				Renderer3D::DrawMesh(submesh.MeshData, submesh.MaterialData,mesh.MeshShader, transform.GetTransform());
+				Renderer3D::DrawMesh(submesh.MeshData, submesh.MaterialData,mesh.MeshShader, transform.GetTransform(),(int)entity);
 			}
 			
 		}
