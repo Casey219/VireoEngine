@@ -181,7 +181,7 @@ namespace Vireo {
 
 
 		//s_Data.LightUBO = UniformBuffer::Create(sizeof(LightData), 2);
-		s_Data.TestUBO = UniformBuffer::Create(sizeof(TestData), 3);
+		//s_Data.TestUBO = UniformBuffer::Create(sizeof(TestData), 3);
 	}
 	static uint32_t s_MeshInstanceCount = 0;
 	void Renderer3D::BeginScene(const EditorCamera& camera) {
@@ -190,8 +190,7 @@ namespace Vireo {
 		s_Data.SceneBuffer.CameraPosition = camera.GetPosition();
 		s_Data.SceneUBO->SetData(&s_Data.SceneBuffer, sizeof(SceneData));
 
-		s_Data.TestBuffer.testVec = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-		s_Data.TestUBO->SetData(&s_Data.TestBuffer, sizeof(TestData));
+		
 		// 2. 更新灯光数据 (Binding 2)
 		/*s_Data.LightBuffer.Position = glm::vec4(lightPos, 1.0f);
 		s_Data.LightBuffer.Color = lightColor;

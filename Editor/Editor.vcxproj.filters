@@ -25,6 +25,7 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Render3DLayer.h" />
+    <ClInclude Include="src\Editor3DLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Panels\ContentBrowserPanel.cpp">
@@ -46,6 +47,7 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Render3DLayer.cpp" />
+    <ClCompile Include="src\Editor3DLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\PBR2.glsl" />

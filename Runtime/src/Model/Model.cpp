@@ -3,14 +3,17 @@
 #include<assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <Utils/AssetManager.h>
+#include <filesystem>
 namespace Vireo {
 	void Model::LoadModel(const std::string& path) {
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals |
 			aiProcess_CalcTangentSpace);
 
-		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) return;
-		m_Directory = path.substr(0, path.find_last_of('/'));
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+			return;
+
+		m_Directory = std::filesystem::path(path).parent_path().generic_string();
 
 		ProcessNode(scene->mRootNode, scene);
 	}
@@ -56,9 +59,7 @@ namespace Vireo {
 			aiMaterial* aiMat = scene->mMaterials[mesh->mMaterialIndex];
 			aiString str;
 			if (aiMat->GetTexture(aiTextureType_DIFFUSE, 0, &str) == AI_SUCCESS|| aiMat->GetTexture(aiTextureType_BASE_COLOR, 0, &str) == AI_SUCCESS) {
-				std::string texPath = m_Directory + "/" + str.C_Str();
-				/*material->SetAlbedo(Texture2D::Create(texPath));
-				VIR_CORE_INFO("Loaded texture: {0}", texPath);*/
+				std::string texPath = (std::filesystem::path(m_Directory) / str.C_Str()).generic_string();
 				material->SetAlbedo(AssetManager::GetTexture(texPath));
 			}
 			else {

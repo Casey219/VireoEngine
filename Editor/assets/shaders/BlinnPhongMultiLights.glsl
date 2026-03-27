@@ -38,6 +38,7 @@ void main()
 #version 450 core
 
 layout(location = 0) out vec4 color;
+layout(location=1) out int color2;
 
 layout(location = 0) in vec3 v_Normal;
 layout(location = 1) in vec3 v_WorldPos;
@@ -48,6 +49,12 @@ layout(std140, binding = 0) uniform SceneData {
     mat4 u_ViewProjection;
     vec3 u_CameraPos; 
 	float padding; 
+};
+
+layout(std140, binding = 1) uniform ModelData {
+	mat4 u_Transform;
+	int u_EntityID;
+	float v_Padding[3];
 };
 
 struct Light {
@@ -68,6 +75,8 @@ layout(std140, binding = 3) uniform TestData {
 };*/
 
 layout(binding = 0) uniform sampler2D u_AlbedoTexture;
+layout(binding = 1) uniform sampler2D u_NormalMap;
+layout(binding = 4) uniform sampler2D u_MRMap;
 
 const float SHININESS = 32.0;      // 高光指数
 const float AMBIENT_STRENGTH = 0.1; // 环境光强度
@@ -103,9 +112,7 @@ void main()
     }
     
     vec3 ambient = AMBIENT_STRENGTH * albedo;
-    //vec4 testColor = testVec; // 访问 TestData 中的 vec4 变量，确保绑定正确
-
     color = vec4(ambient + totalDiffuseSpecular, 1.0);
-	
+	color2=u_EntityID;
 
 }

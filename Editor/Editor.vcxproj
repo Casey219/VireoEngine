@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Panels\SceneHierarchyPanel.h" />
+    <ClInclude Include="src\Editor3DLayer.h" />
     <ClInclude Include="src\EditorLayer.h" />
     <ClInclude Include="src\ExampleLayer.h" />
     <ClInclude Include="src\Render3DLayer.h" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Panels\SceneHierarchyPanel.cpp" />
+    <ClCompile Include="src\Editor3DLayer.cpp" />
     <ClCompile Include="src\EditorApplication.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\ExampleLayer.cpp" />

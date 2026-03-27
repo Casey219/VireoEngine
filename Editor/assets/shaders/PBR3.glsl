@@ -153,7 +153,7 @@ void main() {
     if (u_HasMRMap == 1) {
         vec3 mr = texture(u_MetallicRoughnessMap, v_TexCoord).rgb;
         //roughness *= mr.g; // glTF: Roughness 是 G 通道 
-        //metallic *= mr.b;  // glTF: Metallic 是 B 通道 
+        metallic *= mr.b;  // glTF: Metallic 是 B 通道 
     }
     roughness = max(roughness, 0.05); // 防止除零 
 
@@ -164,7 +164,7 @@ void main() {
         N = texture(u_NormalMap, v_TexCoord).rgb * 2.0 - 1.0;
         N = normalize(v_TBN * N);
     }
-	*/+
+	*/
     vec3 V = normalize(u_CameraPos - v_WorldPos);
     vec3 F0 = mix(vec3(0.04), albedo, metallic); // 基础反射率 
 

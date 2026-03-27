@@ -248,13 +248,14 @@ namespace Vireo {
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
 		//sizeof(m_LightData);
+		Renderer3D::BeginScene(camera);
 		std::memset(&m_LightData, 0, sizeof(LightSceneData));
 		m_LightUBO->SetData(&m_LightData, sizeof(LightSceneData));
 		auto lights = m_Registry.view<PointLightComponent, TransformComponent>();
 		for(auto entity : lights) {
 			auto [light, transform] = lights.get<PointLightComponent, TransformComponent>(entity);
 			AddPointLight(transform.Translation, light.Color, light.Intensity);
-
+			transform.Scale = glm::vec3(0.1f);
 			Renderer3D::DrawCube(transform.GetTransform(), AssetManager::GetWhiteTexture(), 1.0f, glm::vec4(light.Color,1.0), (int)entity);
 		}
 		m_LightUBO->SetData(&m_LightData, sizeof(LightSceneData));
@@ -270,6 +271,10 @@ namespace Vireo {
 			}
 			
 		}
+
+
+		Renderer3D::EndScene();
+		
 		Renderer2D::BeginScene(camera);
 		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 		for (auto entity : group)

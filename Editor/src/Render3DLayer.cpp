@@ -23,8 +23,8 @@ namespace Vireo {
 		//m_Texture = Texture2D::Create("assets/textures/Checkerboard.png");
 		//auto shader = Shader::Create("assets/shaders/PBR3.glsl");
 		
-		m_MeshShader = Shader::Create("assets/shaders/PBR4.glsl");
-		//m_MeshShader = Shader::Create("assets/shaders/BlinnPhongMultiLights.glsl");
+		//m_MeshShader = Shader::Create("assets/shaders/PBR4.glsl");
+		m_MeshShader = Shader::Create("assets/shaders/BlinnPhongMultiLights.glsl");
 
 		//auto meshShader = Shader::Create("assets/shaders/DefaultMesh.glsl");
 
@@ -60,11 +60,11 @@ namespace Vireo {
 		light2.GetComponent<TransformComponent>().Scale = glm::vec3(0.1f);
 		light2.GetComponent<TransformComponent>().Translation = glm::vec3(-2.0f, 3.0f, -1.0f);
 		
-		auto model2 = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj");
-		auto Entity2 = m_Scene->CreateEntity("Model Entity3");
-		Entity2.AddComponent<MeshRendererComponent>(model2, m_MeshShader);
-		//Entity2.GetComponent<TransformComponent>().Scale = glm::vec3(0.01f);
-		Entity2.GetComponent<TransformComponent>().Translation = glm::vec3(5.0, 0.0f, -2.0f);
+		//auto model2 = std::make_shared<Model>("assets/models/Hyrule_Shield/HShield.obj");
+		//auto Entity2 = m_Scene->CreateEntity("Model Entity3");
+		//Entity2.AddComponent<MeshRendererComponent>(model2, m_MeshShader);
+		////Entity2.GetComponent<TransformComponent>().Scale = glm::vec3(0.01f);
+		//Entity2.GetComponent<TransformComponent>().Translation = glm::vec3(5.0, 0.0f, -2.0f);
 		
 		auto Entity1 = m_Scene->CreateEntity("Model Entity");
 		Entity1.AddComponent<MeshRendererComponent>(m_BackpackModel, m_MeshShader);

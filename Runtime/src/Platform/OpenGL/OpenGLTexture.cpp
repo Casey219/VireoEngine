@@ -53,6 +53,10 @@ namespace Vireo {
 				internalFormat = GL_RGB8;
 				dataFormat = GL_RGB;
 			}
+			else if (channels == 1) {
+				internalFormat = GL_R8;
+				dataFormat = GL_RED;
+			}
 
 			m_InternalFormat = internalFormat;
 			m_DataFormat = dataFormat;
@@ -93,6 +97,7 @@ namespace Vireo {
 		VIR_PROFILE_FUNCTION();
 
 		uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3;
+		if (m_DataFormat == GL_RED) bpp = 1;
 		VIR_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be entire texture!");
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 	}

@@ -5,6 +5,7 @@
 #include "ExampleLayer.h"
 #include "EditorLayer.h"
 #include "Render3DLayer.h"
+#include "Editor3DLayer.h"
 
 namespace Vireo {
 	class EditorApplication :public Application {
@@ -13,7 +14,8 @@ namespace Vireo {
 			: Application("VireoEditor", args) 
 		{
 			//PushLayer(new EditorLayer());
-			PushLayer(new Render3DLayer());
+			//PushLayer(new Render3DLayer());
+			PushLayer(new Editor3DLayer());
 		}
 		~EditorApplication() {
 

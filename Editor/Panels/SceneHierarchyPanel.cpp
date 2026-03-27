@@ -270,6 +270,23 @@ namespace Vireo {
 				}
 			}
 
+			if(!m_SelectionContext.HasComponent<MeshRendererComponent>())
+			{
+				if(ImGui::MenuItem("Mesh Renderer"))
+				{
+					m_SelectionContext.AddComponent<MeshRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+				
+			}
+			if (!m_SelectionContext.HasComponent<PointLightComponent>()) {
+				if(ImGui::MenuItem("Point Light"))
+				{
+					m_SelectionContext.AddComponent<PointLightComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 			ImGui::EndPopup();
 		}
 
