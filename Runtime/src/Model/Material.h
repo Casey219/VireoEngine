@@ -19,7 +19,8 @@ namespace Vireo {
 			int HasRoughnessMap = 0;
 			int HasMRMap = 0;
 			int HasAOMap = 0;
-			float Padding[2];
+			glm::vec2 Padding = { 0.0f, 0.0f };
+			//float Padding[2];
 		};
 
 		Material() {

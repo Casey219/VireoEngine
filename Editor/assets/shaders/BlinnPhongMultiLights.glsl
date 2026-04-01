@@ -6,7 +6,7 @@ layout(location = 1) in vec3 a_Normal;
 layout(location = 2) in vec2 a_TexCoord;
 
 
-layout(std140, binding = 0) uniform SceneData {
+layout(std140, binding = 4) uniform SceneData {
     mat4 u_ViewProjection;
     vec3 u_CameraPos; 
 	float padding; 
@@ -44,7 +44,7 @@ layout(location = 1) in vec3 v_WorldPos;
 layout(location = 2) in vec2 v_TexCoord;
 
 // 场景级全局数据
-layout(std140, binding = 0) uniform SceneData {
+layout(std140, binding = 4) uniform SceneData {
     mat4 u_ViewProjection;
     vec3 u_CameraPos; 
 	float padding; 

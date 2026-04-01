@@ -125,7 +125,7 @@ namespace Vireo {
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 		//s_Data.CubeShader = Shader::Create("assets/shaders/Renderer3D.glsl");
 		s_Data.CubeShader = Shader::Create("assets/shaders/RenderCube.glsl");
-		s_Data.SceneUBO = UniformBuffer::Create(sizeof(SceneData), 0);
+		s_Data.SceneUBO = UniformBuffer::Create(sizeof(SceneData), 4);
 
 		// 4. 定义单位立方体 (此处仅示例一个面的逻辑，实际需填满 6 个面)
 		// 每个面 4 个点: {Pos, Normal, UV}
@@ -262,12 +262,22 @@ namespace Vireo {
 		// 2. 绑定材质 
 		material->Bind();
 		shader->Bind();
+
+		shader->SetInt("u_AlbedoTexture", 0);
+		shader->SetInt("u_AlbedoMap", 0);
+		shader->SetInt("u_NormalMap", 1);
+		shader->SetInt("u_MetallicMap", 2);
+		shader->SetInt("u_RoughnessMap", 3);
+		shader->SetInt("u_MRMap", 4);
+		shader->SetInt("u_MetallicRoughnessMap", 4);
+		shader->SetInt("u_AOMap", 5);
 		// 3. 绑定几何并绘制
 		mesh->GetVertexArray()->Bind();
 		RenderCommand::DrawIndexed(mesh->GetVertexArray(), mesh->GetIndexCount());
 
 		// 4. 清理
 		mesh->GetVertexArray()->Unbind();
+		s_MeshInstanceCount++;
 	}
 
 	void Renderer3D::Flush() {

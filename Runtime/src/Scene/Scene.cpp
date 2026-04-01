@@ -13,6 +13,8 @@
 
 #include "Utils/AssetManager.h"
 
+#include "Renderer/RenderCommand.h"
+
 
 
 namespace Vireo {
@@ -247,6 +249,7 @@ namespace Vireo {
 
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
+		
 		//sizeof(m_LightData);
 		Renderer3D::BeginScene(camera);
 		std::memset(&m_LightData, 0, sizeof(LightSceneData));
@@ -274,6 +277,9 @@ namespace Vireo {
 
 
 		Renderer3D::EndScene();
+		
+		RenderCommand::DisableDepthTest();
+		
 		
 		Renderer2D::BeginScene(camera);
 		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);

@@ -32,6 +32,11 @@ namespace Vireo {
 			s_RendererAPI->EnableDepthTest();
 		}
 
+		inline static void DisableDepthTest()
+		{
+			s_RendererAPI->DisableDepthTest();
+		}
+
 		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0)
 		{
 			s_RendererAPI->DrawIndexed(vertexArray,count);
