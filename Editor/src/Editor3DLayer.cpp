@@ -54,12 +54,13 @@ namespace Vireo {
 
 		Renderer3D::Init();
 		
-		m_MeshShader = Shader::Create("assets/shaders/BlinnPhongMultiLights.glsl");
+		//m_MeshShader = Shader::Create("assets/shaders/BlinnPhongMultiLights.glsl");
 		//m_MeshShader = Shader::Create("assets/shaders/PBR3.glsl");
-		//m_MeshShader = Shader::Create("assets/shaders/PBR4.glsl");
-		//m_Model = std::make_shared<Model>("assets/models/DamagedHelmet/DamagedHelmet.gltf");
+		m_MeshShader = Shader::Create("assets/shaders/PBR4.glsl");
+		//m_MeshShader = Shader::Create("assets/shaders/PBR5.glsl");
 		m_Model = AssetManager::GetModel("assets/models/DamagedHelmet/DamagedHelmet.gltf");
-
+		//m_Model = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj");
+		
 		m_ActiveScene = CreateRef<Scene>();
 
 		auto light1 = m_ActiveScene->CreateEntity("Light1");

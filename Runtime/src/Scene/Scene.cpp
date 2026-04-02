@@ -278,7 +278,7 @@ namespace Vireo {
 
 		Renderer3D::EndScene();
 		
-		RenderCommand::DisableDepthTest();
+		//RenderCommand::DisableDepthTest();
 		
 		
 		Renderer2D::BeginScene(camera);

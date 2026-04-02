@@ -6,21 +6,19 @@ namespace Vireo {
 
 	class AssetManager {
 	public:
-		// 初始化，创建粉色错误贴图和默认白图
 		static void Init();
 
-		// 核心接口：纹理
 		static Ref<Texture2D> GetTexture(const std::string& path);
 		static Ref<Texture2D> GetWhiteTexture() { return s_WhiteTexture; }
+		static Ref<Texture2D> GetBlackTexture() { return s_BlackTexture; }
+		static Ref<Texture2D> GetFlatNormalTexture() { return s_FlatNormalTexture; }
+		static Ref<Texture2D> GetDefaultMRTexture() { return s_DefaultMRTexture; }
 
-		// 核心接口：模型
 		static Ref<Model> GetModel(const std::string& path);
 
-		// 清理缓存（例如切换场景时）
 		static void Clear();
 
 	private:
-		// 辅助函数：标准化路径，防止 assets/a.png 和 ./assets/a.png 重复加载
 		static std::string NormalizePath(const std::string& path);
 
 	private:
@@ -29,5 +27,8 @@ namespace Vireo {
 
 		static Ref<Texture2D> s_ErrorTexture;
 		static Ref<Texture2D> s_WhiteTexture;
+		static Ref<Texture2D> s_BlackTexture;
+		static Ref<Texture2D> s_FlatNormalTexture;
+		static Ref<Texture2D> s_DefaultMRTexture;
 	};
 }

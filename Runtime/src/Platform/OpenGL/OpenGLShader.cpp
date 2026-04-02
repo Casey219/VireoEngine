@@ -12,6 +12,8 @@
 
 #include "Core/Timer.h"
 
+#include <functional>
+
 
 
 namespace Vireo {
@@ -210,26 +212,26 @@ namespace Vireo {
 		for (auto&& [stage, source] : shaderSources)
 		{
 			std::filesystem::path shaderFilePath = m_FilePath;
-			std::filesystem::path cachedPath = cacheDirectory / (shaderFilePath.filename().string() + Utils::GLShaderStageCachedVulkanFileExtension(stage));
+			std::string shaderKey = shaderFilePath.generic_string();
+			size_t shaderHash = std::hash<std::string>{}(shaderKey);
+
+			std::filesystem::path cachedPath = cacheDirectory /
+				(std::to_string(shaderHash) + "_" + shaderFilePath.filename().string() + Utils::GLShaderStageCachedVulkanFileExtension(stage));
 
 			std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
 			bool shouldCompile = true;
 
-			// 2. 检查是否可以使用缓存
+#ifndef VIR_DEBUG
 			if (in.is_open())
 			{
-#ifdef VIR_DEBUG
-				// Debug 模式下：检查时间戳
 				auto shaderLastWriteTime = std::filesystem::last_write_time(shaderFilePath);
 				auto cacheLastWriteTime = std::filesystem::last_write_time(cachedPath);
 
 				if (cacheLastWriteTime > shaderLastWriteTime)
 					shouldCompile = false;
-#else
-				// Release/Dist 模式下：只要有缓存就直接用，追求启动速度
-				shouldCompile = false;
-#endif
 			}
+#endif
+
 			if (!shouldCompile)
 			{
 				in.seekg(0, std::ios::end);
@@ -284,26 +286,26 @@ namespace Vireo {
 		for (auto&& [stage, spirv] : m_VulkanSPIRV)
 		{
 			std::filesystem::path shaderFilePath = m_FilePath;
-			std::filesystem::path cachedPath = cacheDirectory / (shaderFilePath.filename().string() + Utils::GLShaderStageCachedOpenGLFileExtension(stage));
+			std::string shaderKey = shaderFilePath.generic_string();
+			size_t shaderHash = std::hash<std::string>{}(shaderKey);
+
+			std::filesystem::path cachedPath = cacheDirectory /
+				(std::to_string(shaderHash) + "_" + shaderFilePath.filename().string() + Utils::GLShaderStageCachedOpenGLFileExtension(stage));
 
 			std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
 			bool shouldCompile = true;
 
-			// 2. 检查是否可以使用缓存
+#ifndef VIR_DEBUG
 			if (in.is_open())
 			{
-#ifdef VIR_DEBUG
-				// Debug 模式下：检查时间戳
 				auto shaderLastWriteTime = std::filesystem::last_write_time(shaderFilePath);
 				auto cacheLastWriteTime = std::filesystem::last_write_time(cachedPath);
 
 				if (cacheLastWriteTime > shaderLastWriteTime)
 					shouldCompile = false;
-#else
-				// Release/Dist 模式下：只要有缓存就直接用，追求启动速度
-				shouldCompile = false;
-#endif
 			}
+#endif
+
 			if (!shouldCompile)
 			{
 				in.seekg(0, std::ios::end);
@@ -348,29 +350,58 @@ namespace Vireo {
 		std::vector<GLuint> shaderIDs;
 		for (auto&& [stage, spirv] : m_OpenGLSPIRV)
 		{
-			GLuint shaderID = shaderIDs.emplace_back(glCreateShader(stage));
-			glShaderBinary(1, &shaderID, GL_SHADER_BINARY_FORMAT_SPIR_V, spirv.data(), spirv.size() * sizeof(uint32_t));
-			glSpecializeShader(shaderID, "main", 0, nullptr, nullptr);
+			GLuint shaderID = glCreateShader(stage);
+
+#ifdef VIR_DEBUG
+		auto sourceIt = m_OpenGLSourceCode.find(stage);
+		VIR_CORE_ASSERT(sourceIt != m_OpenGLSourceCode.end(), "Missing OpenGL GLSL source for shader stage!");
+
+		const std::string& source = sourceIt->second;
+		const GLchar* sourceCStr = source.c_str();
+		glShaderSource(shaderID, 1, &sourceCStr, nullptr);
+		glCompileShader(shaderID);
+
+		GLint isCompiled = 0;
+		glGetShaderiv(shaderID, GL_COMPILE_STATUS, &isCompiled);
+		if (isCompiled == GL_FALSE)
+		{
+			GLint maxLength = 0;
+			glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
+
+			std::vector<GLchar> infoLog(maxLength);
+			glGetShaderInfoLog(shaderID, maxLength, &maxLength, infoLog.data());
+
+			glDeleteShader(shaderID);
+			VIR_CORE_ERROR("Shader compilation failed ({0}):\n{1}", m_FilePath, infoLog.data());
+			VIR_CORE_ASSERT(false, "OpenGL GLSL compilation failed");
+		}
+#else
+		glShaderBinary(1, &shaderID, GL_SHADER_BINARY_FORMAT_SPIR_V, spirv.data(), spirv.size() * sizeof(uint32_t));
+		glSpecializeShader(shaderID, "main", 0, nullptr, nullptr);
+#endif
+
 			glAttachShader(program, shaderID);
+			shaderIDs.emplace_back(shaderID);
 		}
 
 		glLinkProgram(program);
 
-		GLint isLinked;
+		GLint isLinked = 0;
 		glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
 		if (isLinked == GL_FALSE)
 		{
-			GLint maxLength;
+			GLint maxLength = 0;
 			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
 
 			std::vector<GLchar> infoLog(maxLength);
 			glGetProgramInfoLog(program, maxLength, &maxLength, infoLog.data());
-			VIR_CORE_ERROR("Shader linking failed ({0}):\n{1}", m_FilePath, infoLog.data());
 
 			glDeleteProgram(program);
-
 			for (auto id : shaderIDs)
 				glDeleteShader(id);
+
+			VIR_CORE_ERROR("Shader linking failed ({0}):\n{1}", m_FilePath, infoLog.data());
+			VIR_CORE_ASSERT(false, "Shader linking failed");
 		}
 
 		for (auto id : shaderIDs)

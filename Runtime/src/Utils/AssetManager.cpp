@@ -9,18 +9,31 @@ namespace Vireo {
 	std::map<std::string, Ref<Model>> AssetManager::s_Models;
 	Ref<Texture2D> AssetManager::s_ErrorTexture = nullptr;
 	Ref<Texture2D> AssetManager::s_WhiteTexture = nullptr;
+	Ref<Texture2D> AssetManager::s_BlackTexture = nullptr;
+	Ref<Texture2D> AssetManager::s_FlatNormalTexture = nullptr;
+	Ref<Texture2D> AssetManager::s_DefaultMRTexture = nullptr;
 
 	void AssetManager::Init() 
 	{
-		// 1. 创建亮粉色错误贴图 (用于路径错误的视觉提示)
-		uint32_t pink = 0xffff00ff; // RGBA: 255, 0, 255, 255
+		uint32_t pink = 0xffff00ff;
 		s_ErrorTexture = Texture2D::Create(1, 1);
 		s_ErrorTexture->SetData(&pink, sizeof(uint32_t));
 
-		// 2. 创建纯白贴图 (用于没有贴图但有材质的模型)
 		uint32_t white = 0xffffffff;
 		s_WhiteTexture = Texture2D::Create(1, 1);
 		s_WhiteTexture->SetData(&white, sizeof(uint32_t));
+
+		uint32_t black = 0xff000000;
+		s_BlackTexture = Texture2D::Create(1, 1);
+		s_BlackTexture->SetData(&black, sizeof(uint32_t));
+
+		uint32_t flatNormal = 0xffff8080; // RGBA = (128, 128, 255, 255)
+		s_FlatNormalTexture = Texture2D::Create(1, 1);
+		s_FlatNormalTexture->SetData(&flatNormal, sizeof(uint32_t));
+
+		uint32_t defaultMR = 0xff00ff00; // RGBA = (0, 255, 0, 255) => roughness=1, metallic=0
+		s_DefaultMRTexture = Texture2D::Create(1, 1);
+		s_DefaultMRTexture->SetData(&defaultMR, sizeof(uint32_t));
 
 		VIR_CORE_INFO("AssetManager Initialized.");
 	}
