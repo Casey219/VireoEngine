@@ -32,15 +32,25 @@ namespace Vireo {
 		// 1. 提取顶点数据
 		std::vector<MeshVertex> vertices;
 		for (uint32_t i = 0; i < mesh->mNumVertices; i++) {
-			MeshVertex v;
+			MeshVertex v{};
 			v.Position = { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z };
 			v.Normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
+
 			if (mesh->mTangents)
 				v.Tangent = { mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z };
+			else
+				v.Tangent = { 1.0f, 0.0f, 0.0f };
+
+			if (mesh->mBitangents)
+				v.Bitangent = { mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z };
+			else
+				v.Bitangent = { 0.0f, 1.0f, 0.0f };
+
 			if (mesh->mTextureCoords[0])
 				v.TexCoord = { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y };
 			else
 				v.TexCoord = { 0.0f, 0.0f };
+
 			vertices.push_back(v);
 		}
 

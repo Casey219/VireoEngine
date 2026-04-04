@@ -55,9 +55,8 @@ namespace Vireo {
 		Renderer3D::Init();
 		
 		//m_MeshShader = Shader::Create("assets/shaders/BlinnPhongMultiLights.glsl");
-		//m_MeshShader = Shader::Create("assets/shaders/PBR3.glsl");
-		m_MeshShader = Shader::Create("assets/shaders/PBR4.glsl");
-		//m_MeshShader = Shader::Create("assets/shaders/PBR5.glsl");
+		m_MeshShader = Shader::Create("assets/shaders/PBR.glsl");
+
 		m_Model = AssetManager::GetModel("assets/models/DamagedHelmet/DamagedHelmet.gltf");
 		//m_Model = AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj");
 		
@@ -65,13 +64,19 @@ namespace Vireo {
 
 		auto light1 = m_ActiveScene->CreateEntity("Light1");
 		light1.AddComponent<PointLightComponent>();
+		light1.GetComponent<PointLightComponent>().Intensity = 10.0f;
 		light1.GetComponent<TransformComponent>().Translation = glm::vec3(2.0f, 3.0f, 1.0f);
+
 		auto light2 = m_ActiveScene->CreateEntity("Light2");
 		light2.AddComponent<PointLightComponent>();
+		light2.GetComponent<PointLightComponent>().Intensity = 10.0f;
 		light2.GetComponent<TransformComponent>().Translation = glm::vec3(-2.0f, 3.0f, -1.0f);
 
 		auto Entity1 = m_ActiveScene->CreateEntity("DamagedHelmet");
 		Entity1.AddComponent<MeshRendererComponent>(m_Model, m_MeshShader);
+
+		auto Entity2 = m_ActiveScene->CreateEntity("HShield");
+		Entity2.AddComponent<MeshRendererComponent>(AssetManager::GetModel("assets/models/Hyrule_Shield/HShield.obj"), m_MeshShader);
 
 
 
@@ -356,7 +361,7 @@ namespace Vireo {
 				{
 					OpenScene(droppedPath);
 				}
-				else if (ext == ".gltf" || ext == ".glb" || ext == ".fbx" || ext == ".obj" || ext == ".dae")
+				else if (ext == ".gltf" || ext == ".glb" || ext == ".fbx" || ext == ".FBX" || ext == ".obj" || ext == ".dae")
 				{
 					if (m_SceneState != SceneState::Edit)
 						OnSceneStop();

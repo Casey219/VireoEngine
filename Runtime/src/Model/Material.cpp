@@ -40,6 +40,8 @@ namespace Vireo {
 		m_Params.HasAOMap = AOMap ? 1 : 0;
 		(AOMap ? AOMap : AssetManager::GetWhiteTexture())->Bind(5);
 
+		// 关键：每次绑定材质时，把当前材质UBO重新绑定到 binding=3
+		m_PbrUBO->BindRange(3, 0, sizeof(PBRParams));
 		m_PbrUBO->SetData(&m_Params, sizeof(PBRParams));
 
 		/*VIR_CORE_INFO(

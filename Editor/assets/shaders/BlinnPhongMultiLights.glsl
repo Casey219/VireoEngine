@@ -62,8 +62,6 @@ struct Light {
 
 layout(std140, binding = 2) uniform LightData {
     int u_LightCount;       // 当前场景光源数量
-    //float _pad[3];
-	//vec3 padding2;
     Light u_Lights[16];     // 假设最多支持 16 个光源
 };
 

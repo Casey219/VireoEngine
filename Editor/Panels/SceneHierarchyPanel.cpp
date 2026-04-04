@@ -270,7 +270,7 @@ namespace Vireo {
 				}
 			}
 
-			if(!m_SelectionContext.HasComponent<MeshRendererComponent>())
+			/*if(!m_SelectionContext.HasComponent<MeshRendererComponent>())
 			{
 				if(ImGui::MenuItem("Mesh Renderer"))
 				{
@@ -278,7 +278,7 @@ namespace Vireo {
 					ImGui::CloseCurrentPopup();
 				}
 				
-			}
+			}*/
 			if (!m_SelectionContext.HasComponent<PointLightComponent>()) {
 				if(ImGui::MenuItem("Point Light"))
 				{

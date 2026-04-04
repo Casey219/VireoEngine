@@ -196,19 +196,16 @@ namespace Vireo {
 
 	void OpenGLShader::CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
-		GLuint program = glCreateProgram();
-
 		shaderc::Compiler compiler;
 		shaderc::CompileOptions options;
 		options.SetTargetEnvironment(shaderc_target_env_vulkan, shaderc_env_version_vulkan_1_2);
-		const bool optimize = true;
-		if (optimize)
-			options.SetOptimizationLevel(shaderc_optimization_level_performance);
+		options.SetOptimizationLevel(shaderc_optimization_level_performance);
 
 		std::filesystem::path cacheDirectory = Utils::GetCacheDirectory();
 
 		auto& shaderData = m_VulkanSPIRV;
 		shaderData.clear();
+
 		for (auto&& [stage, source] : shaderSources)
 		{
 			std::filesystem::path shaderFilePath = m_FilePath;
@@ -218,22 +215,19 @@ namespace Vireo {
 			std::filesystem::path cachedPath = cacheDirectory /
 				(std::to_string(shaderHash) + "_" + shaderFilePath.filename().string() + Utils::GLShaderStageCachedVulkanFileExtension(stage));
 
-			std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
 			bool shouldCompile = true;
-
 #ifndef VIR_DEBUG
-			if (in.is_open())
+			if (std::filesystem::exists(cachedPath))
 			{
 				auto shaderLastWriteTime = std::filesystem::last_write_time(shaderFilePath);
 				auto cacheLastWriteTime = std::filesystem::last_write_time(cachedPath);
-
-				if (cacheLastWriteTime > shaderLastWriteTime)
-					shouldCompile = false;
+				shouldCompile = !(cacheLastWriteTime > shaderLastWriteTime);
 			}
 #endif
 
 			if (!shouldCompile)
 			{
+				std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
 				in.seekg(0, std::ios::end);
 				auto size = in.tellg();
 				in.seekg(0, std::ios::beg);
@@ -253,6 +247,7 @@ namespace Vireo {
 
 				shaderData[stage] = std::vector<uint32_t>(module.cbegin(), module.cend());
 
+#ifndef VIR_DEBUG
 				std::ofstream out(cachedPath, std::ios::out | std::ios::binary);
 				if (out.is_open())
 				{
@@ -261,6 +256,7 @@ namespace Vireo {
 					out.flush();
 					out.close();
 				}
+#endif
 			}
 		}
 
@@ -275,14 +271,12 @@ namespace Vireo {
 		shaderc::Compiler compiler;
 		shaderc::CompileOptions options;
 		options.SetTargetEnvironment(shaderc_target_env_opengl, shaderc_env_version_opengl_4_5);
-		const bool optimize = false;
-		if (optimize)
-			options.SetOptimizationLevel(shaderc_optimization_level_performance);
 
 		std::filesystem::path cacheDirectory = Utils::GetCacheDirectory();
 
 		shaderData.clear();
 		m_OpenGLSourceCode.clear();
+
 		for (auto&& [stage, spirv] : m_VulkanSPIRV)
 		{
 			std::filesystem::path shaderFilePath = m_FilePath;
@@ -292,22 +286,20 @@ namespace Vireo {
 			std::filesystem::path cachedPath = cacheDirectory /
 				(std::to_string(shaderHash) + "_" + shaderFilePath.filename().string() + Utils::GLShaderStageCachedOpenGLFileExtension(stage));
 
-			std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
 			bool shouldCompile = true;
-
 #ifndef VIR_DEBUG
-			if (in.is_open())
+			if (std::filesystem::exists(cachedPath))
 			{
 				auto shaderLastWriteTime = std::filesystem::last_write_time(shaderFilePath);
 				auto cacheLastWriteTime = std::filesystem::last_write_time(cachedPath);
-
-				if (cacheLastWriteTime > shaderLastWriteTime)
-					shouldCompile = false;
+				shouldCompile = !(cacheLastWriteTime > shaderLastWriteTime);
 			}
 #endif
 
+#ifndef VIR_DEBUG
 			if (!shouldCompile)
 			{
+				std::ifstream in(cachedPath, std::ios::in | std::ios::binary);
 				in.seekg(0, std::ios::end);
 				auto size = in.tellg();
 				in.seekg(0, std::ios::beg);
@@ -317,11 +309,13 @@ namespace Vireo {
 				in.read((char*)data.data(), size);
 			}
 			else
+#endif
 			{
 				spirv_cross::CompilerGLSL glslCompiler(spirv);
 				m_OpenGLSourceCode[stage] = glslCompiler.compile();
 				auto& source = m_OpenGLSourceCode[stage];
 
+#ifndef VIR_DEBUG
 				shaderc::SpvCompilationResult module = compiler.CompileGlslToSpv(source, Utils::GLShaderStageToShaderC(stage), m_FilePath.c_str());
 				if (module.GetCompilationStatus() != shaderc_compilation_status_success)
 				{
@@ -339,6 +333,7 @@ namespace Vireo {
 					out.flush();
 					out.close();
 				}
+#endif
 			}
 		}
 	}
@@ -346,43 +341,48 @@ namespace Vireo {
 	void OpenGLShader::CreateProgram()
 	{
 		GLuint program = glCreateProgram();
-
 		std::vector<GLuint> shaderIDs;
-		for (auto&& [stage, spirv] : m_OpenGLSPIRV)
-		{
-			GLuint shaderID = glCreateShader(stage);
 
 #ifdef VIR_DEBUG
-		auto sourceIt = m_OpenGLSourceCode.find(stage);
-		VIR_CORE_ASSERT(sourceIt != m_OpenGLSourceCode.end(), "Missing OpenGL GLSL source for shader stage!");
-
-		const std::string& source = sourceIt->second;
-		const GLchar* sourceCStr = source.c_str();
-		glShaderSource(shaderID, 1, &sourceCStr, nullptr);
-		glCompileShader(shaderID);
-
-		GLint isCompiled = 0;
-		glGetShaderiv(shaderID, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
+		for (auto&& [stage, source] : m_OpenGLSourceCode)
 		{
-			GLint maxLength = 0;
-			glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
+			GLuint shaderID = glCreateShader(stage);
+			const GLchar* sourceCStr = source.c_str();
 
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(shaderID, maxLength, &maxLength, infoLog.data());
+			glShaderSource(shaderID, 1, &sourceCStr, nullptr);
+			glCompileShader(shaderID);
 
-			glDeleteShader(shaderID);
-			VIR_CORE_ERROR("Shader compilation failed ({0}):\n{1}", m_FilePath, infoLog.data());
-			VIR_CORE_ASSERT(false, "OpenGL GLSL compilation failed");
-		}
-#else
-		glShaderBinary(1, &shaderID, GL_SHADER_BINARY_FORMAT_SPIR_V, spirv.data(), spirv.size() * sizeof(uint32_t));
-		glSpecializeShader(shaderID, "main", 0, nullptr, nullptr);
-#endif
+			GLint isCompiled = 0;
+			glGetShaderiv(shaderID, GL_COMPILE_STATUS, &isCompiled);
+			if (isCompiled == GL_FALSE)
+			{
+				GLint maxLength = 0;
+				glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
+
+				std::vector<GLchar> infoLog(maxLength);
+				glGetShaderInfoLog(shaderID, maxLength, &maxLength, infoLog.data());
+
+				glDeleteShader(shaderID);
+				glDeleteProgram(program);
+
+				VIR_CORE_ERROR("Shader compilation failed ({0}):\n{1}", m_FilePath, infoLog.data());
+				VIR_CORE_ASSERT(false, "OpenGL GLSL compilation failed");
+			}
 
 			glAttachShader(program, shaderID);
 			shaderIDs.emplace_back(shaderID);
 		}
+#else
+		for (auto&& [stage, spirv] : m_OpenGLSPIRV)
+		{
+			GLuint shaderID = glCreateShader(stage);
+			glShaderBinary(1, &shaderID, GL_SHADER_BINARY_FORMAT_SPIR_V, spirv.data(), spirv.size() * sizeof(uint32_t));
+			glSpecializeShader(shaderID, "main", 0, nullptr, nullptr);
+
+			glAttachShader(program, shaderID);
+			shaderIDs.emplace_back(shaderID);
+		}
+#endif
 
 		glLinkProgram(program);
 
